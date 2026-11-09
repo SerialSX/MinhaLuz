@@ -1,4 +1,18 @@
-# MinhaLuz
+#Minha Luz
 
+Jogo 2D educacional para crianças sobre pensamentos negativos e positivos. Feito em Godot.
 
-A ideia do projeto é utilizar do tema sobre a negatividade (OU algo assim que pareça dos temas.), O jogo começa com um/uma personagem sozinha na escuridão. Ela tem que se aventurar em um mundo escuro aonde ela tem a bolha de visão do personagem aonde ela também representa o emocional do personagem (Vida). Ao redor do mundo vai ter palavras negativas (Ou frases) que vão ferir o mental do personagem (Cada palavra negativa da dano = -Vida) ao redor do mapa também terá frases positivas aonde eles aumentam o mental do personagem (+frase = +vida = Maior campo de visão.). O objetivo é atingir um numero X de frases positivas (OBS: Os objetivos PODEM acabar sendo maiores ou em maior quantidade conforme o projeto for avançando.)
+Ideia:
+
+Uma criança está sozinha num mundo escuro e só enxerga o que está dentro da sua bolha de luz. Essa luz é também o emocional dela (a vida).
+
+Frases boas brilham no escuro. Encostar nelas aumenta a luz (+vida).
+Frases ruins tiram luz quando encostam na personagem (−vida).
+Se a luz apagar, é game over.
+Objetivo
+
+Juntar frases boas para dissipar a nuvem escura no fim de cada fase. São 3 fases, e cada uma tem um mapa novo a cada partida. Ao dissipar a última nuvem, o mundo inteiro se ilumina.
+
+Controles
+WASD ou setas: andar
+Esc: pausar
