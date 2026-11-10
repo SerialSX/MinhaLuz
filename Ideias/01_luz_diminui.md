@@ -46,7 +46,7 @@ A tristeza não precisa de um ataque para voltar; ela volta quando a gente fica 
 | Multiplicador parada | 1,5 | Cai mais rápido |
 | Multiplicador por fase | 1,0 / 1,4 / 1,9 | Campo / escola / beco |
 | Frase boa | +12 | Cerca de 20 s de luz na fase 1 |
-| Frase ruim | −20 | |
+| Frase ruim | −25 | 4 hits a partir da luz cheia |
 | Pulsar a partir de | 30 | Aviso de luz baixa |
 
 Com esses valores, na fase 1 a luz cheia chega ao mínimo em cerca de 4 minutos andando e em cerca de 1,5 minuto parada.
@@ -64,6 +64,7 @@ No script da personagem (`CharacterBody2D`):
 @export var mult_fase := [1.0, 1.4, 1.9]   # campo, escola, beco
 @export var raio_min := 24.0           # raio da bolha em pixels
 @export var raio_max := 120.0
+@export var dano_frase_ruim := 25.0   # 4 hits a partir da luz cheia
 
 var fase := 0                          # 0 = campo, 1 = escola, 2 = beco
 var luz := luz_max
@@ -82,13 +83,14 @@ func _physics_process(delta):
 func pegar_frase_boa(valor := 12.0):
 	luz = min(luz + valor, luz_max)
 
-func levar_frase_ruim(dano := 20.0):
-	luz -= dano
+func levar_frase_ruim():
+	luz -= dano_frase_ruim
 	if luz <= 0.0:
 		game_over()
 ```
 
 ## Ligação com outras ideias
 
-- **Ideia 2 (frases ruins que perseguem):** com pouca luz as frases ruins ficam mais agressivas, então a queda natural também aumenta o perigo.
+- **[Ideia 2](02_frases_ruins.md):** a luz mínima (15) já é "último hit", que faz as frases com caminho começarem a andar. Ficar parado demais aumenta o perigo.
+- **[Ideia 3](03_piscada.md):** a piscada a cada hit.
 - **Arte:** as fases 2 (escola) e 3 (beco) vão precisar de chão e objetos novos no mesmo estilo pixel art.
