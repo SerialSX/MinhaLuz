@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/menina.gd" id="1_33uf1"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/personagem/menina_animacoes.tres" id="2_omikn"]
+[ext_resource type="PackedScene" path="res://cenas/nevoa.tscn" id="3_hnedp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p35bf"]
+radius = 5.0
+
+[node name="Menina" type="CharacterBody2D" unique_id=1240280094]
+motion_mode = 1
+script = ExtResource("1_33uf1")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=552641293]
+sprite_frames = ExtResource("2_omikn")
+animation = &"parada_baixo"
+
+[node name="Colisao" type="CollisionShape2D" parent="." unique_id=378974817]
+shape = SubResource("CircleShape2D_p35bf")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=642372573]
+limit_left = 0
+limit_top = 0
+limit_right = 1536
+limit_bottom = 864
+
+[node name="Nevoa" parent="Camera" unique_id=29635546 instance=ExtResource("3_hnedp")]

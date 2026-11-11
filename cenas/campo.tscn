@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/campo.gd" id="1_4aq0p"]
+[ext_resource type="Texture2D" path="res://assets/texturas/grama/grama_tile_nativa.png" id="2_yiobx"]
+[ext_resource type="PackedScene" path="res://cenas/menina.tscn" id="3_f7afm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7mcwi"]
+font_size = 10
+font_color = Color(1, 0.95, 0.85, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_886u5"]
+font_size = 14
+font_color = Color(1, 0.95, 0.85, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 0.8)
+
+[node name="Campo" type="Node2D" unique_id=627721156]
+process_mode = 3
+script = ExtResource("1_4aq0p")
+
+[node name="Mundo" type="Node2D" parent="." unique_id=1499815797]
+process_mode = 1
+
+[node name="Tom" type="CanvasModulate" parent="Mundo" unique_id=836070282]
+color = Color(0.8, 0.8, 0.85, 1)
+
+[node name="Chao" type="Sprite2D" parent="Mundo" unique_id=67345460]
+z_index = -10
+texture_repeat = 2
+texture = ExtResource("2_yiobx")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1536, 864)
+
+[node name="Cenario" type="Node2D" parent="Mundo" unique_id=1355868528]
+
+[node name="Menina" parent="Mundo" unique_id=1240280094 instance=ExtResource("3_f7afm")]
+position = Vector2(768, 432)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=845681760]
+
+[node name="Contador" type="Label" parent="HUD" unique_id=5523078]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 8.0
+offset_bottom = 6.0
+text = "Frases boas: 0/6"
+label_settings = SubResource("LabelSettings_7mcwi")
+
+[node name="Mensagem" type="Label" parent="HUD" unique_id=1269160086]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+label_settings = SubResource("LabelSettings_886u5")
+horizontal_alignment = 1
+vertical_alignment = 1

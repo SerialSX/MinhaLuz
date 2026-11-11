@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/frase.gd" id="1_3fxuh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ueeul"]
+font_size = 10
+font_color = Color(1, 0.9, 0.5, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1eon2"]
+size = Vector2(100, 16)
+
+[node name="Frase" type="Area2D" unique_id=426990345]
+script = ExtResource("1_3fxuh")
+
+[node name="Texto" type="Label" parent="." unique_id=2047044173]
+text = "Você é importante"
+label_settings = SubResource("LabelSettings_ueeul")
+
+[node name="Colisao" type="CollisionShape2D" parent="." unique_id=1044578735]
+shape = SubResource("RectangleShape2D_1eon2")

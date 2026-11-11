@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://shaders/nevoa.gdshader" id="1_u8orl"]
+[ext_resource type="Texture2D" path="res://assets/texturas/nevoa/nevoa_depressao.png" id="2_o2oqs"]
+[ext_resource type="Script" path="res://scripts/nevoa.gd" id="3_l1cic"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qbp8f"]
+shader = ExtResource("1_u8orl")
+
+[node name="Nevoa" type="Sprite2D" unique_id=29635546]
+z_index = 50
+z_as_relative = false
+texture_filter = 2
+texture_repeat = 2
+material = SubResource("ShaderMaterial_qbp8f")
+texture = ExtResource("2_o2oqs")
+region_enabled = true
+region_rect = Rect2(0, 0, 560, 336)
+script = ExtResource("3_l1cic")

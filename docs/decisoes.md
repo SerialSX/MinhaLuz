@@ -37,6 +37,8 @@ Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já
 | 10/11 | A névoa clara/cinza ficou com o Lauan | Escolha da equipe |
 | 11/11 | Menina: **duas maria-chiquinhas marrom-escuras e roupa azul desbotada**, na versão mais "bolinha" | Tem mais cara de criança |
 | 11/11 | O que brilha é **a bolha de visão**, não um objeto | Representa o coração e a sanidade da menina |
+| 11/11 | Casas e árvores **ampliadas 2× no jogo** (`ESCALA_CENARIO` em `scripts/campo.gd`). **Provisório**: quebra a regra da mesma grade | Desenhadas com ~40 px, ficavam só 2× maiores que a menina (20 px). Redesenhar maiores na mesma grade, se sobrar tempo até o dia 19 |
+| 11/11 | Menina com **4 direções**, sem sprite diagonal | Na diagonal ela anda na diagonal e mostra a direção do eixo mais forte. Comum em jogos de pixel art vistos de cima |
 
 ## Organização
 
