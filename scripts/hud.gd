@@ -17,6 +17,9 @@ const FECHAR := 0.2    # cada piscada: fecha 0,2 s, fica fechada 0,1 s e abre 0,
 const FECHADO := 0.1
 const ABRIR := 0.2
 
+## O botão "Procurar" foi clicado com o mouse (o Espaço a fase trata sozinha).
+signal procurar_pedido
+
 var palpebra_cima: ColorRect
 var palpebra_baixo: ColorRect
 var luz: Control
@@ -30,6 +33,9 @@ var cartao_sub: Label
 var frase: Control
 var frase_textos: Array[Label] = []
 var dica: Label
+var poder: Button
+var recarga: ColorRect
+var camada_seta: Node2D
 var pausa: ColorRect
 var primeiro_pausa: Button
 var tela_fim: ColorRect = null
@@ -52,6 +58,11 @@ func _ready() -> void:
 	_montar_cartao()
 	_montar_frase()
 	_montar_dica()
+	_montar_poder()
+	# A seta do poder fica por baixo da pausa e das telas de fim, e para na pausa.
+	camada_seta = Node2D.new()
+	camada_seta.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(camada_seta)
 	_montar_pausa()
 	get_viewport().gui_focus_changed.connect(_ao_mudar_foco)
 
@@ -60,9 +71,10 @@ func _process(_delta: float) -> void:
 	tempo.text = Jogo.formatar_tempo(Jogo.tempo_partida)
 
 
-## Tecla segurada desde o jogo (repetição) não troca o botão da tela de fim; um toque novo troca.
+## Na tela de fim: tecla segurada desde o jogo (repetição) não troca o botão,
+## o Espaço do poder não confirma (Confirmar é Enter) e nada vale enquanto ela aparece.
 func _input(event: InputEvent) -> void:
-	if tela_fim != null and event.is_echo():
+	if tela_fim != null and (event.is_echo() or event.is_action("procurar") or tela_fim.modulate.a < 1.0):
 		get_viewport().set_input_as_handled()
 
 
@@ -121,6 +133,24 @@ func atualizar_contador(pegas: int, total: int) -> void:
 	contador.text = texto
 	var largura := ThemeDB.fallback_font.get_string_size(texto, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
 	estrela.position.x = roundf(LARGURA - 6.0 - largura - 3.0 - 9.0)
+
+
+## Botão do poder: apagado enquanto recarrega (falta: 1 = acabou de usar, 0 = pronto)
+## e translúcido quando a menina passa por trás dele, no canto do mapa.
+func atualizar_poder(falta: float, menina_na_tela: Vector2) -> void:
+	poder.disabled = falta > 0.0
+	recarga.size.x = roundf((poder.size.x - 4.0) * (1.0 - falta)) if falta > 0.0 else 0.0
+	poder.modulate.a = 0.35 if poder.get_rect().grow(10.0).has_point(menina_na_tela) else 1.0
+
+
+## Seta do poder "Procurar" apontando da menina para o alvo (troca a anterior).
+func mostrar_seta(menina: Node2D, alvo: Node2D) -> void:
+	for velha in camada_seta.get_children():
+		velha.queue_free()
+	var seta := SetaCaminho.new()
+	seta.menina = menina
+	seta.alvo = alvo
+	camada_seta.add_child(seta)
 
 
 ## Frase boa grande, dourada e brilhando, por 2 s.
@@ -260,6 +290,21 @@ func _montar_dica() -> void:
 	fundo.content_margin_bottom = 2
 	dica.add_theme_stylebox_override("normal", fundo)
 	dica.modulate.a = 0.0
+
+
+## Canto de baixo à esquerda: "Procurar (Espaço)". Sem foco de teclado, para o
+## Espaço e o Enter não apertarem o botão por engano durante o jogo.
+func _montar_poder() -> void:
+	poder = Button.new()
+	poder.text = "Procurar (Espaço)"
+	poder.icon = _icone("res://assets/ui/estrela_nativa.png")
+	poder.focus_mode = Control.FOCUS_NONE
+	poder.add_theme_font_size_override("font_size", 8)
+	poder.position = Vector2(6, ALTURA - 22.0)
+	poder.pressed.connect(procurar_pedido.emit)
+	add_child(poder)
+	poder.reset_size()
+	recarga = _retangulo(poder, COR_OURO, Vector2(2, poder.size.y - 3.0), Vector2(0, 1))
 
 
 func _montar_pausa() -> void:

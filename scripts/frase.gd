@@ -1,7 +1,7 @@
 class_name Frase
 extends Area2D
-## Uma frase no chão. As boas brilham através da névoa e aumentam a luz;
-## as ruins só aparecem dentro da bolha e tiram luz.
+## Uma frase no chão. Boas e ruins só aparecem dentro da bolha de luz;
+## as boas aumentam a luz e as ruins tiram.
 ## Cada frase sabe o seu par do banco (DadosFases.PARES): pegar a boa dissolve
 ## as ruins do mesmo par (quem faz isso é scripts/fase.gd).
 ## Tipos de frase ruim (Ideia 2):
@@ -61,7 +61,7 @@ func _ready() -> void:
 	estilo.font_color = COR_BOA if boa else COR_RUIM
 	label.label_settings = estilo
 	label.text = texto
-	z_index = 60 if boa else 15   # névoa = 50: as boas brilham no escuro, as ruins só na bolha
+	z_index = 15   # abaixo da névoa (50): boas e ruins só aparecem dentro da bolha de luz
 
 	# Centraliza o texto e ajusta a colisão ao tamanho dele (com a fonte do tema).
 	tamanho_texto = label.get_minimum_size()

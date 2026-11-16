@@ -20,6 +20,7 @@ Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atu
 - [x] 3 fases: Campo, Escola e Beco, cada uma com mapa sorteado e a nuvem escura no fim.
 - [x] Banco de frases do SGDD (12 pares), 4 pares por fase. Pegar uma frase boa dissolve as frases ruins que ela responde.
 - [x] Frases ruins paradas, errantes e com caminho (Ideia 2), piscada da tela (Ideia 3) e luz que cai mais rápido a cada fase (Ideia 1).
+- [x] Frases boas só aparecem dentro da luz; o poder **Procurar** (Espaço ou botão no HUD) mostra uma seta para a mais perto.
 - [x] HUD: barra de luz, contador de frases, tempo, frase boa grande no centro e dicas.
 - [x] Pontuação: 100 por frase boa + a luz que sobrou no fim de cada fase.
 - [x] Envio de pontuação e tempo ao servidor da matéria (tutorial "Score Request"), desligado até existir `config/placar.cfg`.
@@ -37,10 +38,11 @@ Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atu
 
 **Entrega**
 - [x] Preset de exportação Windows com o PCK embutido (`export_presets.cfg`, saída em `build/`).
+- [x] `.exe` gerado em `build/MinhaLuz.exe` (um arquivo só, com ícone; fica fora do git). Para gerar de novo: Projeto > Exportar > Exportar Projeto.
 
 ## Falta
 
-- [ ] Instalar os templates de exportação do Godot 4.7.2 (Editor > Gerenciar Modelos de Exportação) e gerar o `.exe`. Testar o `.exe` fora do editor.
+- [ ] Testar o `.exe` no PC da apresentação (no PC do Lauan ele já abre e roda; os templates do Godot 4.7.2 só estão instalados nessa máquina).
 - [ ] Pedir à professora o endereço e a chave do servidor e criar `config/placar.cfg` (modelo em `config/placar.exemplo.cfg`).
 - [ ] Página no itch.io: capa 630×500, 2 ou 5 prints, gênero Educacional, comentários desligados. Mandar o link para a professora.
 - [ ] Atualizar o SGDD para o jogo atual (luz de 0 a 100, 3 fases, 4 frases por fase, nuvem escura).

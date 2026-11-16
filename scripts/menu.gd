@@ -46,7 +46,7 @@ func _ready() -> void:
 	_botao(botoes, "Controles", _abrir.bind(painel_controles, primeiro_controles))
 	_botao(botoes, "Sair", _sair)
 
-	_texto(self, "WASD ou setas para andar · Esc para pausar", 8, COR_SUAVE,
+	_texto(self, "WASD ou setas para andar · Espaço para procurar · Esc para pausar", 8, COR_SUAVE,
 		Vector2(0, 256), 472.0, HORIZONTAL_ALIGNMENT_RIGHT)
 
 	get_viewport().gui_focus_changed.connect(_ao_mudar_foco)
@@ -173,7 +173,7 @@ func _montar_controles() -> void:
 	grade.add_theme_constant_override("v_separation", 0)
 	grade.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	caixa.add_child(grade)
-	for par: Array in [["Andar", "WASD ou setas"], ["Pausar", "Esc ou P"], ["Confirmar", "Enter"]]:
+	for par: Array in [["Andar", "WASD ou setas"], ["Procurar", "Espaço"], ["Pausar", "Esc ou P"], ["Confirmar", "Enter"]]:
 		_texto(grade, par[0], 9, COR_OURO, Vector2.ZERO)
 		_texto(grade, par[1], 9, COR_TEXTO, Vector2.ZERO)
 	_texto(caixa, "Frases que brilham dão luz.", 9, COR_OURO_CLARO, Vector2.ZERO, 0.0,

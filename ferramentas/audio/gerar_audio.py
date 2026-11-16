@@ -508,6 +508,19 @@ def sfx_frase_boa():
     return fade_fim(buf, 0.15), -3.0
 
 
+def sfx_procurar():
+    """Poder "Procurar": dois sininhos suaves subindo (uma quinta) com cintilar, ~0,6 s."""
+    rng = random.Random(17)
+    buf = novo(0.6)
+    timbre = ((1.0, 1.0, 0.35), (2.0, 0.22, 0.2), (3.01, 0.06, 0.12))
+    for k, m in enumerate((81, 88)):
+        t0 = 0.11 * k
+        colocar(buf, nota(hz(m), 0.45, SR_SFX, timbre, 0.6 - t0, ataque=0.003, fim=0.2), t0)
+    brilhos(buf, rng, (93, 96, 100), 0.12, 0.45, 6, 0.05)
+    buf = com_reverb(buf, 0.7, 0.3)
+    return fade_fim(buf, 0.15), -5.0
+
+
 def sfx_dano():
     """Baque grave e macio + oscilação desafinada curta descendo, ~0,45 s (sem assustar)."""
     sr = SR_SFX
@@ -639,7 +652,7 @@ def sfx_dissolver():
 
 EFEITOS = (("clique", sfx_clique), ("foco", sfx_foco), ("frase_boa", sfx_frase_boa), ("dano", sfx_dano),
            ("luz_apagando", sfx_luz_apagando), ("pulso", sfx_pulso), ("nuvem", sfx_nuvem),
-           ("fase_completa", sfx_fase_completa), ("aviso", sfx_aviso), ("dissolver", sfx_dissolver))
+           ("fase_completa", sfx_fase_completa), ("aviso", sfx_aviso), ("dissolver", sfx_dissolver), ("procurar", sfx_procurar))
 
 
 def finalizar_sfx(x, alvo_db):

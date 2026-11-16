@@ -62,4 +62,6 @@ Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já
 | 16/11 | Janela no **maior múltiplo de 480×270 que cabe na tela** | 1440×810 não cabe num notebook 1366×768 |
 | 16/11 | Música, sons e a arte nova (escola, beco, nuvem, ícone) **gerados por código** em `ferramentas/` | Sem dúvida de licença e sem IA generativa; dá para gerar de novo |
 | 16/11 | Controles no **Mapa de Entrada** do projeto, não mais criados por código | Funcionam em qualquer cena (menu, F6) |
+| 16/11 | **Frases boas só aparecem dentro da bolha de luz** (antes brilhavam através da névoa) | Pedido do Lauan depois de jogar: achar a frase faz parte do jogo |
+| 16/11 | Poder **Procurar** (Espaço ou botão no HUD): seta dourada piscando aponta a frase boa mais perto, ou a nuvem com 4/4; dura 3 s e recarrega em 5 s | Sem as frases brilhando de longe, a criança precisa de uma ajuda para se orientar. Pisca 1,5 vez por segundo (regra do time: no máximo 2) |
 

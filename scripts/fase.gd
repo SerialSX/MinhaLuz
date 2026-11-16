@@ -15,6 +15,7 @@ const ESCALA_CENARIO := 2.0
 const DISTANCIA_NUVEM := 550.0   # a nuvem nasce longe do começo
 const INTERVALO_PULSO := 1.2     # som "pulso" com a luz baixa
 const PONTOS_FRASE_BOA := 100
+const RECARGA_PROCURAR := 5.0    # segundos entre um uso e outro do poder "Procurar"
 
 var dados: Dictionary
 var ocupados: Array[Rect2] = []
@@ -23,6 +24,7 @@ var boas_total := 0
 var boas_pegas := 0
 var terminou := false
 var espera_pulso := 0.0
+var espera_procurar := 0.0
 var nuvem: NuvemEscura
 
 @onready var tom: CanvasModulate = $Mundo/Tom  # deixa o mundo um pouco apagado
@@ -50,12 +52,18 @@ func _ready() -> void:
 	_criar_frases()
 
 	hud.configurar(Jogo.fase_atual + 1, dados.nome, dados.subtitulo, boas_total)
+	hud.procurar_pedido.connect(procurar)
+	if Jogo.fase_atual == 0:   # depois do cartão de título, ensina o poder
+		create_tween().tween_callback(hud.mostrar_dica.bind("Aperte Espaço para procurar as frases boas", 4.0)).set_delay(3.2)
 	Audio.tocar_musica(dados.musica)
 	Jogo.contando_tempo = true
 
 
 func _process(delta: float) -> void:
 	hud.atualizar_luz(menina.luz, menina.luz_max, menina.luz_baixa)
+	espera_procurar = maxf(espera_procurar - delta, 0.0)
+	var falta := 1.0 if terminou or not menina.ativa else espera_procurar / RECARGA_PROCURAR
+	hud.atualizar_poder(falta, menina.get_global_transform_with_canvas().origin)
 	# Luz baixa: além da bolha pulsando, um "pulso" baixinho, como um coração.
 	if terminou or not menina.ativa or menina.luz > menina.luz_baixa:
 		espera_pulso = 0.0
@@ -64,6 +72,38 @@ func _process(delta: float) -> void:
 	if espera_pulso <= 0.0:
 		Audio.tocar_sfx("pulso")
 		espera_pulso = INTERVALO_PULSO
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("procurar"):
+		get_viewport().set_input_as_handled()
+		procurar()
+
+
+## Poder "Procurar" (Espaço ou o botão do HUD): uma seta piscando aponta a frase
+## boa mais perto ou, com todas pegas, a nuvem. Depois espera RECARGA_PROCURAR.
+func procurar() -> void:
+	if terminou or not menina.ativa:
+		return
+	if espera_procurar > 0.0:
+		hud.mostrar_dica("O poder volta em %d s" % ceili(espera_procurar), 1.2)
+		return
+	espera_procurar = RECARGA_PROCURAR
+	Audio.tocar_sfx("procurar")
+	hud.mostrar_seta(menina, _alvo_mais_perto())
+
+
+func _alvo_mais_perto() -> Node2D:
+	var alvo: Node2D = nuvem
+	var menor := INF
+	for no in cenario.get_children():
+		var frase := no as Frase
+		if frase and frase.boa and not frase.is_queued_for_deletion():
+			var distancia := frase.global_position.distance_squared_to(menina.global_position)
+			if distancia < menor:
+				menor = distancia
+				alvo = frase
+	return alvo
 
 
 # ---------- Mapa ----------

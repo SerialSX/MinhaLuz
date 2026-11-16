@@ -15,7 +15,7 @@ Este documento é o que **toda conversa do projeto precisa saber**. Os detalhes 
 
 Uma criança está sozinha num mundo escuro e só enxerga o que está dentro da **sua bolha de luz**. Essa luz é o **emocional dela**: é ao mesmo tempo a vida e o campo de visão.
 
-- **Frases boas** brilham no escuro. Encostar nelas aumenta a luz.
+- **Frases boas** só aparecem dentro da bolha de luz. Encostar nelas aumenta a luz. O poder **Procurar** (Espaço ou o botão no canto da tela) mostra uma seta piscando para a mais perto.
 - **Frases ruins** tiram luz quando encostam na menina.
 - **Se a luz chegar a zero, é game over.** A mensagem do game over encoraja: *"Você sempre pode recomeçar e tentar novamente."*
 - **Objetivo:** juntar frases boas para dissipar a **nuvem escura** no fim de cada fase.
@@ -63,7 +63,8 @@ A dificuldade sobe junto com o ambiente: do aberto para o fechado, como o sentim
 |---|---|
 | **Luz** | A vida e o emocional da menina, de 0 a 100 |
 | **Bolha** (de visão ou de luz) | O círculo em volta da menina onde dá para ver o mundo. O tamanho acompanha a luz |
-| **Frase boa** | Frase positiva que brilha no escuro. Aumenta a luz |
+| **Frase boa** | Frase positiva, visível só dentro da luz. Aumenta a luz |
+| **Procurar** | Poder (Espaço): uma seta aponta a frase boa mais perto, ou a nuvem quando todas foram pegas. Recarrega em 5 s |
 | **Frase ruim** | Frase negativa. Tira luz quando encosta na menina |
 | **Hit** | Quando uma frase ruim encosta na menina |
 | **Último hit** | Quando mais um hit apagaria a luz |

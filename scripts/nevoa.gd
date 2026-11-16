@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 ## Some aos poucos (vitória: o mundo se ilumina).
 func dissipar(segundos: float) -> void:
 	var t := create_tween()
-	t.tween_method(_definir_opacidade, 0.97, 0.0, segundos)
+	t.tween_method(_definir_opacidade, 1.0, 0.0, segundos)
 
 
 func _definir_opacidade(valor: float) -> void:
