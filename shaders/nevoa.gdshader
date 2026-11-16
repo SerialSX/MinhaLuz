@@ -5,7 +5,7 @@ shader_type canvas_item;
 uniform vec2 centro = vec2(0.5, 0.5);        // posição da menina na tela (0 a 1)
 uniform float raio = 0.18;                    // raio da bolha, em fração da altura da tela
 uniform float suavidade = 0.12;               // largura da borda suave
-uniform vec2 velocidade = vec2(-0.01, 0.0);   // névoa andando para a esquerda
+uniform vec2 velocidade = vec2(0.01, 0.0);    // positivo: a névoa anda para a esquerda
 uniform float opacidade = 0.97;               // força da névoa longe da menina (0 = sem névoa)
 
 void fragment() {

@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | A fazer |
+| **Status** | Feito (Protótipo 1) |
 | **Depende de** | Tarefa 04 |
 | **Ideia de origem** | `docs/visao_geral.md`, `Ideias/01_luz_diminui.md`, `Ideias/02_frases_ruins.md` (só a parte básica) |
 

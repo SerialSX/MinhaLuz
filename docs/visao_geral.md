@@ -86,13 +86,22 @@ MinhaLuz/
   README.md
   Ideias/          uma ideia aprovada por arquivo (01_, 02_, ...)
   docs/            documentos gerais (esta visão geral, fluxo de trabalho)
+  Tarefas/         tarefas de programação, uma por arquivo
+  cenas/           cenas do Godot (menu, fase, hud, menina, frase, nuvem)
+  scripts/         scripts GDScript (jogo, audio e placar são autoloads)
+  shaders/         névoa e fundo do menu
+  ui/              tema das telas
+  config/          modelo do arquivo do servidor de pontuação
+  ferramentas/     scripts Python que geram a arte nova e o áudio
   assets/
-    texturas/      grama/ e nevoa/
-    sprites/       casas/, arvores/ e personagem/
+    texturas/      grama/, nevoa/, escola/ e beco/
+    sprites/       casas/, arvores/, personagem/, escola/, beco/ e nuvem/
+    audio/         musica/ e sfx/
+    ui/            ícones do HUD
   referencias/     imagens originais, rascunhos e testes
 ```
 
-O trabalho está na branch **`Texturas`**.
+O jogo está na branch **`Prototipo2`** (protótipo 2, de 16/11). A branch `Prototipo` guarda o protótipo 1 (só a fase 1).
 
 ## Conversas do projeto
 

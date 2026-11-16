@@ -1,0 +1,237 @@
+[gd_resource type="Theme" format=3]
+
+[sub_resource type="StyleBoxFlat" id="botao_normal"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.07, 0.063, 0.11, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.42, 0.37, 0.52, 0.75)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="botao_hover"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.2, 0.15, 0.07, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.827, 0.42, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="botao_pressed"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.08, 0.035, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78, 0.62, 0.3, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="botao_focus"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(1, 0.827, 0.42, 0.14)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.827, 0.42, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="botao_disabled"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.07, 0.063, 0.11, 0.5)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.28, 0.36, 0.5)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="painel"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.055, 0.05, 0.095, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.42, 0.66, 0.85)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="trilho"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.2, 0.17, 0.3, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="trilho_cheio"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.85, 0.66, 0.3, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="trilho_cheio_destaque"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 0.827, 0.42, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+anti_aliasing = false
+
+[sub_resource type="Gradient" id="grad_puxador"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.95)
+colors = PackedColorArray(0.85, 0.66, 0.3, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="puxador"]
+gradient = SubResource("grad_puxador")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="grad_puxador_destaque"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.45, 0.75, 0.97)
+colors = PackedColorArray(1, 0.95, 0.8, 1, 1, 0.827, 0.42, 1, 0.2, 0.12, 0.03, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="puxador_destaque"]
+gradient = SubResource("grad_puxador_destaque")
+width = 10
+height = 10
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="grad_marcado"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.45, 0.95)
+colors = PackedColorArray(1, 0.95, 0.75, 1, 1, 0.827, 0.42, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="marcado"]
+gradient = SubResource("grad_marcado")
+width = 10
+height = 10
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="grad_vazio"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.55, 0.95)
+colors = PackedColorArray(0, 0, 0, 0.4, 0.66, 0.6, 0.78, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="vazio"]
+gradient = SubResource("grad_vazio")
+width = 10
+height = 10
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[resource]
+default_font_size = 10
+Button/colors/font_color = Color(0.925, 0.902, 0.961, 1)
+Button/colors/font_disabled_color = Color(0.5, 0.47, 0.56, 0.7)
+Button/colors/font_focus_color = Color(1, 0.827, 0.42, 1)
+Button/colors/font_hover_color = Color(1, 0.827, 0.42, 1)
+Button/colors/font_hover_pressed_color = Color(0.85, 0.66, 0.3, 1)
+Button/colors/font_pressed_color = Color(0.85, 0.66, 0.3, 1)
+Button/font_sizes/font_size = 10
+Button/styles/disabled = SubResource("botao_disabled")
+Button/styles/focus = SubResource("botao_focus")
+Button/styles/hover = SubResource("botao_hover")
+Button/styles/hover_pressed = SubResource("botao_pressed")
+Button/styles/normal = SubResource("botao_normal")
+Button/styles/pressed = SubResource("botao_pressed")
+CheckBox/colors/font_color = Color(0.925, 0.902, 0.961, 1)
+CheckBox/colors/font_focus_color = Color(1, 0.827, 0.42, 1)
+CheckBox/colors/font_hover_color = Color(1, 0.827, 0.42, 1)
+CheckBox/colors/font_hover_pressed_color = Color(1, 0.827, 0.42, 1)
+CheckBox/colors/font_pressed_color = Color(0.925, 0.902, 0.961, 1)
+CheckBox/constants/check_v_offset = 1
+CheckBox/constants/h_separation = 6
+CheckBox/font_sizes/font_size = 10
+CheckBox/icons/checked = SubResource("marcado")
+CheckBox/icons/checked_disabled = SubResource("marcado")
+CheckBox/icons/unchecked = SubResource("vazio")
+CheckBox/icons/unchecked_disabled = SubResource("vazio")
+CheckBox/styles/disabled = SubResource("botao_disabled")
+CheckBox/styles/focus = SubResource("botao_focus")
+CheckBox/styles/hover = SubResource("botao_hover")
+CheckBox/styles/hover_pressed = SubResource("botao_hover")
+CheckBox/styles/normal = SubResource("botao_normal")
+CheckBox/styles/pressed = SubResource("botao_normal")
+HSlider/icons/grabber = SubResource("puxador")
+HSlider/icons/grabber_disabled = SubResource("puxador")
+HSlider/icons/grabber_highlight = SubResource("puxador_destaque")
+HSlider/styles/focus = SubResource("botao_focus")
+HSlider/styles/grabber_area = SubResource("trilho_cheio")
+HSlider/styles/grabber_area_highlight = SubResource("trilho_cheio_destaque")
+HSlider/styles/slider = SubResource("trilho")
+Label/colors/font_color = Color(0.925, 0.902, 0.961, 1)
+Label/colors/font_outline_color = Color(0.03, 0.025, 0.06, 0.85)
+Label/constants/outline_size = 2
+Panel/styles/panel = SubResource("painel")
+PanelContainer/styles/panel = SubResource("painel")

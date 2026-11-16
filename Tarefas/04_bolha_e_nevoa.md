@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | A fazer |
+| **Status** | Feito (Protótipo 1) |
 | **Depende de** | Tarefa 03 |
 | **Ideia de origem** | Visual alvo: `assets/texturas/nevoa/nevoa_depressao_previa.png` (prévia do Lauan) |
 

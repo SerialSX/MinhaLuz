@@ -15,4 +15,12 @@ Juntar frases boas para dissipar a nuvem escura no fim de cada fase. São 3 fase
 
 Controles
 WASD ou setas: andar
-Esc: pausar
+Esc ou P: pausar
+Enter: confirmar
+F11: tela cheia
+
+Como rodar
+Abra o project.godot no Godot 4.7 e aperte F5. O jogo começa no menu.
+
+Servidor de pontuação
+Copie config/placar.exemplo.cfg para config/placar.cfg e coloque o endereço e a chave da professora. Esse arquivo fica fora do git.

@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/fase.gd" id="1_fase"]
+[ext_resource type="Texture2D" path="res://assets/texturas/grama/grama_tile_nativa.png" id="2_chao"]
+[ext_resource type="PackedScene" path="res://cenas/menina.tscn" id="3_menina"]
+[ext_resource type="PackedScene" path="res://cenas/hud.tscn" id="4_hud"]
+
+[node name="Fase" type="Node2D"]
+script = ExtResource("1_fase")
+
+[node name="Mundo" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="Tom" type="CanvasModulate" parent="Mundo"]
+color = Color(0.8, 0.8, 0.85, 1)
+
+[node name="Chao" type="Sprite2D" parent="Mundo"]
+z_index = -10
+texture_repeat = 2
+texture = ExtResource("2_chao")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1536, 864)
+
+[node name="Cenario" type="Node2D" parent="Mundo"]
+
+[node name="Menina" parent="Mundo" instance=ExtResource("3_menina")]
+position = Vector2(768, 432)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]

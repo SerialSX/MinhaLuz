@@ -37,7 +37,7 @@ Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já
 | 10/11 | A névoa clara/cinza ficou com o Lauan | Escolha da equipe |
 | 11/11 | Menina: **duas maria-chiquinhas marrom-escuras e roupa azul desbotada**, na versão mais "bolinha" | Tem mais cara de criança |
 | 11/11 | O que brilha é **a bolha de visão**, não um objeto | Representa o coração e a sanidade da menina |
-| 11/11 | Casas e árvores **ampliadas 2× no jogo** (`ESCALA_CENARIO` em `scripts/campo.gd`). **Provisório**: quebra a regra da mesma grade | Desenhadas com ~40 px, ficavam só 2× maiores que a menina (20 px). Redesenhar maiores na mesma grade, se sobrar tempo até o dia 19 |
+| 11/11 | Casas e árvores **ampliadas 2× no jogo** (`ESCALA_CENARIO` em `scripts/fase.gd`). **Provisório**: quebra a regra da mesma grade | Desenhadas com ~40 px, ficavam só 2× maiores que a menina (20 px). Redesenhar maiores na mesma grade, se sobrar tempo até o dia 19 |
 | 11/11 | Menina com **4 direções**, sem sprite diagonal | Na diagonal ela anda na diagonal e mostra a direção do eixo mais forte. Comum em jogos de pixel art vistos de cima |
 
 ## Organização
@@ -48,3 +48,18 @@ Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já
 | 10/11 | Pastas `assets/`, `referencias/`, `Ideias/`, `docs/`; nomes em minúsculo, sem acento e sem espaço | Padrão recomendado para o Godot |
 | 11/11 | Projeto do app do Claude como **Diretor**: Contexto só com o obrigatório e **uma conversa por função** | Funciona de qualquer PC e mantém cada conversa focada |
 | 11/11 | **Imagens só na conversa de arte** | Não estourar o limite do Contexto |
+
+## Protótipo 2
+
+| Data | Decisão | Por quê |
+|---|---|---|
+| 16/11 | As fases usam o **banco de frases do SGDD**: 4 pares por fase (12 frases boas no jogo) | Texto revisado pela equipe, sem xingamentos |
+| 16/11 | **Pegar uma frase boa dissolve as frases ruins do mesmo par** | "Cada frase boa responde a uma ruim" vira mecânica, e o mundo fica mais calmo a cada frase |
+| 16/11 | Fase 1: 6 frases ruins; fase 2: 8; fase 3: 10. Frases com caminho só a partir da fase 2 | Dificuldade sobe junto com o ambiente (Ideia 2) |
+| 16/11 | **Nuvem escura**: encostar nela sem as 4 frases boas só mostra uma dica, sem dano. Com as 4, ela se dissipa e a fase termina | Desafio do fim de fase sem susto |
+| 16/11 | Pontos: **100 por frase boa + a luz que sobrou** no fim de cada fase | Adapta o "50 por vida" do SGDD para a luz de 0 a 100 |
+| 16/11 | Endereço e chave do servidor ficam em `config/placar.cfg`, **fora do git** | O repositório é público |
+| 16/11 | Janela no **maior múltiplo de 480×270 que cabe na tela** | 1440×810 não cabe num notebook 1366×768 |
+| 16/11 | Música, sons e a arte nova (escola, beco, nuvem, ícone) **gerados por código** em `ferramentas/` | Sem dúvida de licença e sem IA generativa; dá para gerar de novo |
+| 16/11 | Controles no **Mapa de Entrada** do projeto, não mais criados por código | Funcionam em qualquer cena (menu, F6) |
+

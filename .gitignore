@@ -1,2 +1,10 @@
 # Cache do Godot: é recriado sozinho ao abrir o projeto
 .godot/
+
+# Executável exportado pelo Godot (a pasta fica no git só com o .gdignore,
+# porque o Godot não cria a pasta de destino ao exportar)
+build/*
+!build/.gdignore
+
+# Endereço e chave do servidor de pontuação: nunca no git
+config/placar.cfg

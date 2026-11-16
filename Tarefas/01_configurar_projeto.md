@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | A fazer |
+| **Status** | Feito (Protótipo 1) |
 | **Depende de** | Projeto criado pelo Godot na pasta `MinhaLuz` (passo manual da equipe) |
 | **Ideia de origem** | Protótipo da fase 1 |
 

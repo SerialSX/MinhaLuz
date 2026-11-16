@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | A fazer |
+| **Status** | Feito (Protótipo 1) |
 | **Depende de** | Tarefa 02 |
 | **Ideia de origem** | Protótipo da fase 1 (fase 1: campo) |
 

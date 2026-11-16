@@ -1,52 +1,47 @@
 # Estado atual
 
-**Atualizado em:** 11/11/2026 (quarta). **Faltam 8 dias** para a apresentação final provável (19/11).
+**Atualizado em:** 16/11/2026 (segunda). **Faltam 3 dias** para a apresentação final provável (19/11).
 
 Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atualização.
 
-## Pronto
+## Branches
 
-**Arte**
-- [x] Grama em pixel art que repete sem emenda (`assets/texturas/grama/`).
-- [x] Névoas que repetem sem emenda: V1 escura, V2 com redemoinho e GIFs de movimento (`assets/texturas/nevoa/`).
-- [x] Névoa `nevoa_depressao` (`assets/texturas/nevoa/`).
-- [x] 16 casas, cada uma nas versões original e melancólica (`assets/sprites/casas/`).
-- [x] 9 árvores, cada uma nas versões original e melancólica (`assets/sprites/arvores/`).
-- [x] Menina: folha de sprites com 4 direções, parada e andando, quadros de 20×20 (`assets/sprites/personagem/`).
+- `Prototipo`: protótipo 1, só a fase 1 (11/11).
+- `Prototipo2`: protótipo 2, o jogo completo descrito abaixo (16/11). Ainda não mesclado na `main`.
 
-**Design**
-- [x] Ideia 1: a luz diminui sozinha (`Ideias/01_luz_diminui.md`).
-- [x] Ideia 2: frases ruins (`Ideias/02_frases_ruins.md`).
-- [x] Ideia 3: a piscada (`Ideias/03_piscada.md`).
-- [x] Visão geral do jogo (`docs/visao_geral.md`).
+## Pronto (Protótipo 2)
 
-**Organização**
-- [x] Repositório organizado em `assets/`, `Ideias/`, `docs/` e `referencias/`.
-- [x] Projeto no app do Claude com a visão geral no Contexto.
+**Telas**
+- [x] Menu inicial (Start, Config, Controles, Sair), seguindo o mockup do time.
+- [x] Config: volume da música, volume dos efeitos, tela cheia e opção de desligar a piscada da tela. Fica salvo entre partidas.
+- [x] Pausa (Continuar, Menu principal, Sair do jogo), game over, fase concluída e tela final com tempo e pontos.
 
-## Em andamento
+**Jogo**
+- [x] 3 fases: Campo, Escola e Beco, cada uma com mapa sorteado e a nuvem escura no fim.
+- [x] Banco de frases do SGDD (12 pares), 4 pares por fase. Pegar uma frase boa dissolve as frases ruins que ela responde.
+- [x] Frases ruins paradas, errantes e com caminho (Ideia 2), piscada da tela (Ideia 3) e luz que cai mais rápido a cada fase (Ideia 1).
+- [x] HUD: barra de luz, contador de frases, tempo, frase boa grande no centro e dicas.
+- [x] Pontuação: 100 por frase boa + a luz que sobrou no fim de cada fase.
+- [x] Envio de pontuação e tempo ao servidor da matéria (tutorial "Score Request"), desligado até existir `config/placar.cfg`.
 
-- [ ] Montar o Contexto do Projeto (estes arquivos de `docs/`).
-- [ ] Definir as conversas do Projeto, uma por função.
+**Arte e som**
+- [x] Arte da escola, do beco, da nuvem escura e ícone do jogo (`ferramentas/arte/`).
+- [x] Músicas do menu, das 3 fases, da vitória e do game over, e 10 efeitos sonoros (`ferramentas/audio/`).
 
-## Ainda não começado
+**Correções do protótipo 1**
+- [x] A menina não sai mais do mapa.
+- [x] A frase ruim não acerta de novo a menina parada em cima dela.
+- [x] A menina pisca no máximo 2 vezes por segundo na proteção.
+- [x] Controles no Mapa de Entrada do projeto.
+- [x] A névoa anda para a esquerda.
 
-- [ ] **Projeto no Godot.**
-- [ ] Lista de frases boas e ruins (o texto de cada uma).
-- [ ] Visual das frases boas e ruins no jogo.
-- [ ] Bolha de visão (o círculo de luz) no jogo.
-- [ ] Nuvem escura do fim de fase.
-- [ ] Telas: menu inicial (Start, Config, Controles), pausa, game over e vitória.
-- [ ] Arte das fases 2 (escola) e 3 (beco).
-- [ ] Som e música.
-- [ ] SGDD do jogo (se for exigido pela matéria).
+**Entrega**
+- [x] Preset de exportação Windows com o PCK embutido (`export_presets.cfg`, saída em `build/`).
 
-## Próxima prioridade (sugestão)
+## Falta
 
-Com 8 dias, o mais importante é ter **um protótipo jogável da fase 1** para a apresentação:
-
-1. Projeto Godot com a menina andando no campo (grama, casas e árvores).
-2. A bolha de luz em volta dela, com o escuro e a névoa fora.
-3. Frases boas e ruins mexendo na luz, e o game over.
-
-Escola, beco, telas completas e som entram só se sobrar tempo.
+- [ ] Instalar os templates de exportação do Godot 4.7.2 (Editor > Gerenciar Modelos de Exportação) e gerar o `.exe`. Testar o `.exe` fora do editor.
+- [ ] Pedir à professora o endereço e a chave do servidor e criar `config/placar.cfg` (modelo em `config/placar.exemplo.cfg`).
+- [ ] Página no itch.io: capa 630×500, 2 ou 5 prints, gênero Educacional, comentários desligados. Mandar o link para a professora.
+- [ ] Atualizar o SGDD para o jogo atual (luz de 0 a 100, 3 fases, 4 frases por fase, nuvem escura).
+- [ ] Ensaiar no PC da apresentação.
