@@ -6,6 +6,7 @@ extends Sprite2D
 
 var menina: Menina
 var shader_mat: ShaderMaterial
+var claridade := 0.0
 
 
 func _ready() -> void:
@@ -27,6 +28,16 @@ func _process(_delta: float) -> void:
 	var pos_na_tela: Vector2 = menina.get_global_transform_with_canvas().origin
 	shader_mat.set_shader_parameter("centro", pos_na_tela / tela)
 	shader_mat.set_shader_parameter("raio", menina.raio_da_bolha())
+
+
+## Clareia a névoa aos poucos (0 = escura): a fase chama a cada frase boa pega.
+func clarear(valor: float, segundos: float) -> void:
+	create_tween().tween_method(_definir_claridade, claridade, valor, segundos)
+
+
+func _definir_claridade(valor: float) -> void:
+	claridade = valor
+	shader_mat.set_shader_parameter("claridade", valor)
 
 
 ## Some aos poucos (vitória: o mundo se ilumina).

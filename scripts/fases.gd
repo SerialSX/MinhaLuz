@@ -28,6 +28,8 @@ const TAMANHO_MAPA := Vector2(1536, 864)
 ## - "caminho": tamanho dos caminhos das frases "com caminho", em pixels.
 ## - "queda": multiplicador da queda da luz (Ideia 1).
 ## - "tom": cor do CanvasModulate (o mundo apagado; na vitória vai para branco).
+## - "nevoa_clara": quanto a névoa clareia com todas as frases boas (0 a 1). No beco é menos:
+##   o chão é escuro, e a bolha tem que continuar mais clara que a névoa.
 ## - "obstaculos" (com colisão) e "decoracao" (sem colisão): grupos de sprites em
 ##   assets/sprites/<pasta>/<melancolica|original>/<nome>_NN_nativa.png, NN de 1 até "variantes".
 ##   "z" 10 = desenhado acima da menina (copas, plantas, postes); -5 = no chão, embaixo de tudo.
@@ -39,6 +41,7 @@ const FASES := [
 		"musica": "fase1",
 		"chao": "res://assets/texturas/grama/grama_tile_nativa.png",
 		"tom": Color(0.8, 0.8, 0.85),
+		"nevoa_clara": 0.4,
 		"queda": 1.0,
 		"pares": [0, 1, 2, 3],
 		"ruins": {"parada": 3, "errante": 3, "caminho": 0},
@@ -56,6 +59,7 @@ const FASES := [
 		"musica": "fase2",
 		"chao": "res://assets/texturas/escola/piso_tile_nativa.png",
 		"tom": Color(0.72, 0.74, 0.82),
+		"nevoa_clara": 0.35,
 		"queda": 1.4,
 		"pares": [4, 5, 6, 7],
 		"ruins": {"parada": 3, "errante": 3, "caminho": 2},
@@ -75,6 +79,7 @@ const FASES := [
 		"musica": "fase3",
 		"chao": "res://assets/texturas/beco/chao_tile_nativa.png",
 		"tom": Color(0.62, 0.6, 0.74),
+		"nevoa_clara": 0.18,
 		"queda": 1.9,
 		"pares": [8, 9, 10, 11],
 		"ruins": {"parada": 3, "errante": 3, "caminho": 4},

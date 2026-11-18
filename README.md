@@ -6,7 +6,7 @@ Ideia:
 
 Uma criança está sozinha num mundo escuro e só enxerga o que está dentro da sua bolha de luz. Essa luz é também o emocional dela (a vida).
 
-Frases boas só aparecem dentro da luz. Encostar nelas aumenta a luz (+vida). Aperte Espaço (ou o botão Procurar) e uma seta mostra o caminho até a mais perto.
+Frases boas só aparecem dentro da luz. Encostar nelas aumenta a luz (+vida), abre o círculo de visão e clareia o mundo. Aperte Espaço (ou o botão Procurar) e uma seta mostra o caminho até a mais perto.
 Frases ruins tiram luz quando encostam na personagem (−vida).
 Se a luz apagar, é game over.
 Objetivo

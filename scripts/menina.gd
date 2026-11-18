@@ -27,6 +27,7 @@ signal ferida   ## levou um hit e ainda tem luz (a fase toca o som e a piscada)
 # Tamanho da bolha, em fração da altura da tela (Tarefa 04)
 @export var raio_min := 0.06
 @export var raio_max := 0.20
+var raio_extra := 0.0               # a bolha abre a cada frase boa pega (a fase define)
 
 var tamanho_mapa := DadosFases.TAMANHO_MAPA
 
@@ -81,7 +82,7 @@ func _physics_process(delta: float) -> void:
 
 
 func raio_da_bolha() -> float:
-	var raio := lerpf(raio_min, raio_max, clampf(luz / luz_max, 0.0, 1.0))
+	var raio := lerpf(raio_min, raio_max, clampf(luz / luz_max, 0.0, 1.0)) + raio_extra
 	if luz <= luz_baixa and ativa and not luz_congelada:
 		raio *= 1.0 + 0.1 * sin(tempo * TAU / 1.2)   # pulsa devagar, como um coração
 	return raio

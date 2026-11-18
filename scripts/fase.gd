@@ -15,6 +15,9 @@ const ESCALA_CENARIO := 2.0
 const DISTANCIA_NUVEM := 550.0   # a nuvem nasce longe do começo
 const INTERVALO_PULSO := 1.2     # som "pulso" com a luz baixa
 const PONTOS_FRASE_BOA := 100
+# A cada frase boa pega, a bolha abre e o mundo clareia; com todas, chega nestes valores.
+const RAIO_EXTRA := 0.10        # a bolha fica este tanto maior (fração da altura da tela)
+const CLARO := 0.8              # o tom do mundo anda 80% do caminho até o branco (a vitória completa)
 const RECARGA_PROCURAR := 5.0    # segundos entre um uso e outro do poder "Procurar"
 
 var dados: Dictionary
@@ -239,6 +242,7 @@ func _ao_pegar_frase_boa(frase: Frase) -> void:
 	Audio.tocar_sfx("frase_boa")
 	hud.mostrar_frase(frase.texto)
 	hud.atualizar_contador(boas_pegas, boas_total)
+	_clarear()
 
 	# Cada frase boa responde a uma ruim: as ruins do mesmo par se desfazem.
 	var dissolveu := false
@@ -252,6 +256,16 @@ func _ao_pegar_frase_boa(frase: Frase) -> void:
 	if boas_pegas == boas_total:
 		hud.mostrar_dica("Agora vá até a nuvem escura!")
 		nuvem.pulsar()
+
+
+## A bolha abre e o mundo clareia de acordo com as frases boas pegas (tom e névoa).
+## Com todas, falta pouco: a vitória dissipa a névoa e devolve a cor.
+func _clarear() -> void:
+	var progresso := float(boas_pegas) / boas_total
+	var t := create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(menina, "raio_extra", RAIO_EXTRA * progresso, 1.2)
+	t.tween_property(tom, "color", dados.tom.lerp(Color.WHITE, CLARO * progresso), 1.2)
+	menina.nevoa.clarear(progresso * dados.nevoa_clara, 1.2)
 
 
 func _ao_levar_dano() -> void:

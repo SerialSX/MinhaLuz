@@ -21,6 +21,7 @@ Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atu
 - [x] Banco de frases do SGDD (12 pares), 4 pares por fase. Pegar uma frase boa dissolve as frases ruins que ela responde.
 - [x] Frases ruins paradas, errantes e com caminho (Ideia 2), piscada da tela (Ideia 3) e luz que cai mais rápido a cada fase (Ideia 1).
 - [x] Frases boas só aparecem dentro da luz; o poder **Procurar** (Espaço ou botão no HUD) mostra uma seta para a mais perto.
+- [x] A cada frase boa pega, a bolha abre e o mundo clareia (tom do cenário e névoa).
 - [x] HUD: barra de luz, contador de frases, tempo, frase boa grande no centro e dicas.
 - [x] Pontuação: 100 por frase boa + a luz que sobrou no fim de cada fase.
 - [x] Envio de pontuação e tempo ao servidor da matéria (tutorial "Score Request"), desligado até existir `config/placar.cfg`.
