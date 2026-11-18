@@ -19,6 +19,7 @@ Espaço: procurar a próxima frase boa
 Esc ou P: pausar
 Enter: confirmar
 F11: tela cheia
+Controle (gamepad ou o controle de ESP32 em ferramentas/esp32): analógico ou direcional anda, X procura, Start pausa, A confirma, B volta
 
 Como rodar
 Abra o project.godot no Godot 4.7 e aperte F5. O jogo começa no menu.
