@@ -7,33 +7,38 @@
 
 #include <BleGamepad.h>
 
-// ---------- Pinos (troque aqui se ligar diferente) ----------
+// ---------- Pinos (ajustados pro controle montado do grupo) ----------
 // O joystick precisa de pinos do ADC1 (32 a 39): o ADC2 não funciona com o Bluetooth ligado.
-const int PINO_EIXO_X = 34;     // VRx do joystick
-const int PINO_EIXO_Y = 35;     // VRy do joystick
-const int PINO_PROCURAR = 25;   // botão Procurar (o clique do joystick, SW, pode ir junto aqui)
-const int PINO_CONFIRMAR = 26;  // botão Confirmar
-const int PINO_VOLTAR = 27;     // botão Voltar
-const int PINO_PAUSAR = 14;     // botão Pausar
+// O joystick está deitado de lado no controle: o VRx do módulo virou o cima/baixo
+// e o VRy virou o esquerda/direita. Por isso os dois estão trocados aqui.
+const int PINO_EIXO_X = 35;       // VRy do módulo (esquerda/direita do jogo)
+const int PINO_EIXO_Y = 34;       // VRx do módulo (cima/baixo do jogo)
+const int PINO_PROCURAR = 25;     // botão B do controle
+const int PINO_PROCURAR_2 = 32;   // clique do joystick (SW): também procura
+const int PINO_CONFIRMAR = 33;    // botão A do controle
+const int PINO_VOLTAR = 27;       // botão Select do controle
+const int PINO_PAUSAR = 26;       // botão Start do controle
+const int PINO_ENERGIA_JOYSTICK = 14;  // D14 fica em HIGH e alimenta o +5V do joystick (3,3 V)
 
-const bool INVERTER_X = false;  // se "direita" andar para a esquerda, troque para true
-const bool INVERTER_Y = false;  // se "cima" andar para baixo, troque para true
+const bool INVERTER_X = true;   // no controle do grupo o esquerda/direita sai invertido
+const bool INVERTER_Y = false;  // no controle do grupo o cima/baixo já sai certo
 const float ZONA_MORTA = 0.15;  // folga no centro do joystick (0 a 1)
 const unsigned long DEBOUNCE_MS = 25;
 
 // Botões numerados como o Godot espera: 1 = A, 2 = B, 3 = X, 7 = Start.
 struct Botao {
   int pino;
+  int pino2;  // segundo pino que aperta o mesmo botão (-1 = nenhum)
   uint8_t botao;
   bool apertado;
   unsigned long mudou;
 };
 
 Botao botoes[] = {
-  {PINO_CONFIRMAR, BUTTON_1, false, 0},  // A: confirmar
-  {PINO_VOLTAR, BUTTON_2, false, 0},     // B: voltar
-  {PINO_PROCURAR, BUTTON_3, false, 0},   // X: procurar
-  {PINO_PAUSAR, BUTTON_7, false, 0},     // Start: pausar
+  {PINO_CONFIRMAR, -1, BUTTON_1, false, 0},               // A: confirmar
+  {PINO_VOLTAR, -1, BUTTON_2, false, 0},                  // B: voltar (botão Select)
+  {PINO_PROCURAR, PINO_PROCURAR_2, BUTTON_3, false, 0},   // X: procurar (botão B ou clique do joystick)
+  {PINO_PAUSAR, -1, BUTTON_7, false, 0},                  // Start: pausar
 };
 
 BleGamepad controle("Minha Luz Controle", "Minha Luz", 100);
@@ -70,8 +75,14 @@ int16_t eixo(int pino, int centro, bool inverter) {
 }
 
 void setup() {
+  pinMode(PINO_ENERGIA_JOYSTICK, OUTPUT);
+  digitalWrite(PINO_ENERGIA_JOYSTICK, HIGH);  // liga o joystick antes de medir o centro
+  delay(50);
   for (Botao &b : botoes) {
     pinMode(b.pino, INPUT_PULLUP);  // botão entre o pino e o GND
+    if (b.pino2 >= 0) {
+      pinMode(b.pino2, INPUT_PULLUP);
+    }
   }
   centroX = lerCentro(PINO_EIXO_X);
   centroY = lerCentro(PINO_EIXO_Y);
@@ -93,7 +104,7 @@ void loop() {
     controle.setY(eixo(PINO_EIXO_Y, centroY, INVERTER_Y));
     unsigned long agora = millis();
     for (Botao &b : botoes) {
-      bool apertado = digitalRead(b.pino) == LOW;
+      bool apertado = digitalRead(b.pino) == LOW || (b.pino2 >= 0 && digitalRead(b.pino2) == LOW);
       if (apertado != b.apertado && agora - b.mudou >= DEBOUNCE_MS) {
         b.apertado = apertado;
         b.mudou = agora;

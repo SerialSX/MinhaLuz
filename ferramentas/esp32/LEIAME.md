@@ -5,10 +5,10 @@ O ESP32 vira um **controle Bluetooth** (gamepad). O Windows reconhece como um co
 | No controle | No jogo |
 |---|---|
 | Joystick (ou direcional) | Andar e escolher opções nos menus |
-| X (botão Procurar) | Procurar a próxima frase boa |
-| Start (botão Pausar) | Pausar |
-| A (botão Confirmar) | Confirmar |
-| B (botão Voltar) | Voltar (fecha os painéis do menu) |
+| B ou clique do joystick (Procurar) | Procurar a próxima frase boa |
+| Start (Pausar) | Pausar |
+| A (Confirmar) | Confirmar |
+| Select (Voltar) | Voltar (fecha os painéis do menu) |
 
 Um controle de Xbox também funciona com os mesmos botões, e serve de reserva na apresentação.
 
@@ -19,19 +19,21 @@ Um controle de Xbox também funciona com os mesmos botões, e serve de reserva n
 - 4 botões de apertar (push button).
 - Jumpers e protoboard.
 
-## Ligações (ESP32 DevKit v1)
+## Ligações (ESP32 DOIT DevKit v1, 30 pinos) — controle montado do grupo
 
 | Peça | Pino da peça | ESP32 |
 |---|---|---|
-| Joystick | VRx | GPIO 34 |
-| Joystick | VRy | GPIO 35 |
-| Joystick | +5V | **3V3** (não use 5 V: o ADC do ESP32 vai só até 3,3 V) |
-| Joystick | GND | GND |
-| Joystick | SW (clique, opcional) | GPIO 25, junto com o botão Procurar |
-| Botão Procurar | um lado / outro lado | GPIO 25 / GND |
-| Botão Confirmar | um lado / outro lado | GPIO 26 / GND |
-| Botão Voltar | um lado / outro lado | GPIO 27 / GND |
-| Botão Pausar | um lado / outro lado | GPIO 14 / GND |
+| Joystick | VRx | GPIO 34 (vira o cima/baixo do jogo: o joystick está deitado) |
+| Joystick | VRy | GPIO 35 (vira o esquerda/direita do jogo) |
+| Joystick | +5V | **GPIO 14**, que o código deixa em HIGH (3,3 V). Não use 5 V: o ADC do ESP32 vai só até 3,3 V |
+| Joystick | GND | GND (trilho − da protoboard) |
+| Joystick | SW (clique) | GPIO 32 (também procura) |
+| Botão A (Confirmar) | um lado / outro lado | GPIO 33 / GND |
+| Botão B (Procurar) | um lado / outro lado | GPIO 25 / GND |
+| Botão Start (Pausar) | um lado / outro lado | GPIO 26 / GND |
+| Botão Select (Voltar) | um lado / outro lado | GPIO 27 / GND |
+
+Na protoboard, a ESP32 fica com o lado do VIN livre: GPIO 14 = j5, 27 = j6, 26 = j7, 25 = j8, 33 = j9, 32 = j10, 35 = j11, 34 = j12, GND = j2 (ligado no trilho −).
 
 Os botões não precisam de resistor: o código liga o pull-up interno. Para usar outros pinos, troque as constantes no começo do `.ino`. O joystick tem que ficar em pinos do ADC1 (32 a 39), porque o ADC2 não funciona com o Bluetooth ligado.
 
@@ -45,5 +47,5 @@ Os botões não precisam de resistor: o código liga o pull-up interno. Para usa
 ## Conectar no PC
 
 1. No Windows: Configurações > Bluetooth e dispositivos > Adicionar dispositivo > Bluetooth > **Minha Luz Controle**.
-2. Para conferir: aperte Win + R, digite `joy.cpl` e abra as propriedades do "Minha Luz Controle". O joystick mexe a cruz, e os botões acendem 1 (Confirmar), 2 (Voltar), 3 (Procurar) e 7 (Pausar).
-3. Abra o jogo. Se cima/baixo ou esquerda/direita estiverem trocados, mude `INVERTER_Y` ou `INVERTER_X` para `true` e grave de novo.
+2. Para conferir: aperte Win + R, digite `joy.cpl` e abra as propriedades do "Minha Luz Controle". O joystick mexe a cruz, e os botões acendem 1 (A), 2 (Select), 3 (B ou clique do joystick) e 7 (Start).
+3. Abra o jogo. No controle do grupo, `INVERTER_X` está em `true` (o esquerda/direita saía invertido) e `INVERTER_Y` em `false`. Se num controle montado de outro jeito cima/baixo ou esquerda/direita saírem trocados, mude o `INVERTER_` daquele eixo e grave de novo.
