@@ -218,7 +218,7 @@ func mostrar_final(pontos: int, tempo_total: float) -> void:
 	_rotulo(caixa, "Você encontrou a sua luz!", 16, COR_OURO)
 	_rotulo(caixa, "Tempo: %s   ·   Pontos: %d" % [Jogo.formatar_tempo(tempo_total), pontos], 10, COR_TEXTO)
 	_rotulo(caixa, "Se você ficar triste, converse com\nalguém em quem você confia.", 9, COR_OURO_CLARO)
-	_rotulo(caixa, "Equipe: João Arthur, Lauan Moreira e Enzo\nExperimentação de Protótipos · Unifor 2026",
+	_rotulo(caixa, "Equipe: João Arthur e Lauan Moreira\nExperimentação de Protótipos · Unifor 2026",
 		8, COR_SUAVE)
 	var primeiro := _botao(caixa, "Jogar de novo", _sair_para.bind(Jogo.novo_jogo))
 	_botao(caixa, "Menu principal", _sair_para.bind(Jogo.ir_para_menu))
