@@ -15,7 +15,7 @@ Frases espalhadas pelo campo. As **boas** brilham através da névoa e aumentam 
 - **Usar:** `cenas/campo.tscn`, `cenas/menina.tscn`, `scripts/menina.gd`
 - **Criar:** `cenas/frase.tscn`, `scripts/frase.gd`
 
-## Regras (do Contexto)
+## Regras (da visão geral)
 
 | Item | Valor |
 |---|---|

@@ -4,7 +4,7 @@
 
 | Pessoa | Função |
 |---|---|
-| **[seu nome]** | Tudo um pouco, conforme a necessidade |
+| **João Arthur** | Tudo um pouco, conforme a necessidade |
 | **Lauan** | Tudo um pouco, conforme a necessidade |
 
 No momento as funções estão misturadas: cada um faz o que dá. Ainda não há divisão fixa entre arte, programação e design.
@@ -26,9 +26,9 @@ No momento as funções estão misturadas: cada um faz o que dá. Ainda não há
 
 **Toda segunda e quarta** a equipe apresenta as atualizações do que fez.
 
-## O que isso significa para as conversas
+## O que isso significa para o projeto
 
-- O prazo é **curto**. Toda sugestão precisa caber no tempo que falta até a apresentação final.
+- O prazo é **curto**. Toda ideia nova precisa caber no tempo que falta até a apresentação final.
 - Antes de propor algo grande, perguntar: **isso fica pronto e testado até o dia 19?**
 - Cada segunda e quarta precisa ter **algo novo para mostrar**.
 
@@ -36,4 +36,4 @@ No momento as funções estão misturadas: cada um faz o que dá. Ainda não há
 
 - [ ] Data exata da apresentação final.
 - [ ] O que a matéria exige como entrega (jogo, SGDD, apresentação) e como avalia.
-- [ ] PDFs da matéria (serão enviados).
+- [x] PDFs da matéria (em `docs/materia/`).

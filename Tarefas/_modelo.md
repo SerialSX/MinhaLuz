@@ -31,4 +31,4 @@ O que **não** fazer nesta tarefa, mesmo que pareça fácil.
 ## Ao terminar
 
 - Marcar o status como **Feito**.
-- Commit e push são feitos pela equipe. Sugestão de mensagem: `...`
+- Mensagem de commit sugerida: `...`

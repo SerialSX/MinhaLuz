@@ -1,6 +1,6 @@
 # Registro de decisões
 
-Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já foi descartado. Decisão nova entra no fim da lista.
+Cada decisão com o **porquê**, para ninguém sugerir de novo o que já foi descartado. Decisão nova entra no fim da lista.
 
 ## Jogo e tema
 
@@ -44,10 +44,8 @@ Cada decisão com o **porquê**, para nenhuma conversa sugerir de novo o que já
 
 | Data | Decisão | Por quê |
 |---|---|---|
-| 10/11 | **Commit e push só pela equipe** | Controle do repositório fica com as pessoas |
+| 10/11 | **Commit e push só pela equipe** | Controle do repositório fica com a equipe |
 | 10/11 | Pastas `assets/`, `referencias/`, `Ideias/`, `docs/`; nomes em minúsculo, sem acento e sem espaço | Padrão recomendado para o Godot |
-| 11/11 | Projeto do app do Claude como **Diretor**: Contexto só com o obrigatório e **uma conversa por função** | Funciona de qualquer PC e mantém cada conversa focada |
-| 11/11 | **Imagens só na conversa de arte** | Não estourar o limite do Contexto |
 
 ## Protótipo 2
 

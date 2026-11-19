@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | **Status** | Feito (Protótipo 1) |
-| **Depende de** | Projeto criado pelo Godot na pasta `MinhaLuz` (passo manual da equipe) |
+| **Depende de** | Projeto criado pelo Godot na pasta `MinhaLuz` |
 | **Ideia de origem** | Protótipo da fase 1 |
 
 ## Objetivo
 
 Deixar o projeto Godot 4 pronto para pixel art: resolução pequena com escala inteira, filtro Nearest, controles WASD e setas, e pastas organizadas.
 
-## Antes da tarefa (manual, pela equipe)
+## Antes da tarefa (no Godot)
 
 1. Abrir o Godot 4 → **Novo Projeto** → pasta: a raiz do repositório `MinhaLuz` (onde está o `README.md`).
 2. Renderizador: **Compatibilidade** ou **Mobile** (mais leve; serve bem para 2D).

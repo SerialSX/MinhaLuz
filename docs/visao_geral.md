@@ -1,6 +1,6 @@
 # Minha Luz: visão geral
 
-Este documento é o que **toda conversa do projeto precisa saber**. Os detalhes de cada mecânica ficam nos arquivos da pasta `Ideias/`.
+Este documento resume **o que toda a equipe precisa saber** sobre o jogo. Os detalhes de cada mecânica ficam nos arquivos da pasta `Ideias/`.
 
 ## O jogo
 
@@ -77,8 +77,8 @@ A dificuldade sobe junto com o ambiente: do aberto para o fechado, como o sentim
 1. **Nada que assuste demais.** O público começa nos 4 anos: sem sustos repentinos, sem clarões e sem perseguição de verdade.
 2. **Acessibilidade:** efeitos de piscar com no máximo 2 piscadas por segundo e opção para desligar no menu.
 3. **Nomes de arquivo** em minúsculo, sem acento e sem espaço (`casa_01_original.png`).
-4. **Commit e push são sempre feitos pelas pessoas da equipe.** O Claude escreve arquivos e comandos, mas não envia nada sozinho.
-5. **Decisão tomada numa conversa precisa virar arquivo** (em `Ideias/` ou `docs/`) e ir para o repositório. Só assim as outras conversas ficam sabendo.
+4. **Commit e push só pela equipe.**
+5. **Toda decisão precisa virar arquivo** (em `Ideias/` ou `docs/`) e ir para o repositório. Assim a equipe inteira fica sabendo.
 
 ## Organização do repositório
 
@@ -104,13 +104,11 @@ MinhaLuz/
 
 O jogo está na branch **`Prototipo2`** (protótipo 2, de 16/11). A branch `Prototipo` guarda o protótipo 1 (só a fase 1).
 
-## Conversas do projeto
+## Frentes de trabalho
 
-Cada conversa tem **uma função só**:
-
-| Conversa | Função |
+| Frente | O que inclui |
 |---|---|
 | Ideias e mecânicas | Discutir e escrever as próximas ideias |
-| Arte | Sprites, texturas e fases. As imagens ficam só nela |
+| Arte | Sprites, texturas e fases |
 | Planejamento | Decidir o que fazer e em que ordem |
 | Revisão | Comparar o que foi feito com as ideias |
