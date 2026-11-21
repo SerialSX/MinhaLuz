@@ -2,6 +2,7 @@ extends Control
 ## Menu principal (mockup do time): título, botões Start, Config, Controles e
 ## Sair, e um fundo vivo: névoa andando, a menina com a luz pulsando e frases
 ## boas subindo devagar. Config e Controles abrem como painéis no meio da tela.
+## No Config também se escolhe a dificuldade (Jogo.config["dificuldade"]).
 ## Tudo é montado aqui; a cena cenas/menu.tscn só tem a raiz.
 
 const COR_OURO := Color(1.0, 0.827, 0.42)          # #ffd36b
@@ -11,8 +12,15 @@ const COR_TEXTO := Color(0.925, 0.902, 0.961)
 const COR_SUAVE := Color(0.663, 0.612, 0.761)
 const POS_MENINA := Vector2(86, 208)
 const VAGALUMES := [Vector2(58, 46), Vector2(406, 36), Vector2(34, 136), Vector2(430, 158), Vector2(362, 232), Vector2(150, 252)]
+## Embaixo da escolha de dificuldade (mesma ordem de DadosFases.DIFICULDADES).
+const FRASES_DIFICULDADE := [
+	"Para os pequenos: mais calma e mais luz.",
+	"Do jeito que o jogo foi pensado.",
+	"Desafio: a névoa fala mais e a luz pode apagar.",
+]
 
 var botoes: VBoxContainer
+var rodape: Label
 var camada_frases: Control
 var painel_config: Control
 var painel_controles: Control
@@ -22,6 +30,9 @@ var painel_aberto: Control = null
 var botao_que_abriu: Control = null
 var check_tela_cheia: CheckBox
 var check_piscar: CheckBox
+var opcoes_dificuldade: Array[Button] = []   # Fácil, Normal e Difícil, no Config
+var frase_dificuldade: Label                 # explica a escolha, embaixo das opções
+var rotulo_dificuldade: Label                # "Dificuldade: Normal", embaixo dos botões
 var saindo := false    # já apertou Start ou Sair: ignora outros cliques
 var sem_som := false   # foco mudado pelo código não toca "foco"
 var lado := 0          # lado da próxima frase que sobe (0 esquerda, 1 direita)
@@ -45,9 +56,13 @@ func _ready() -> void:
 	_botao(botoes, "Config", _abrir.bind(painel_config, primeiro_config))
 	_botao(botoes, "Controles", _abrir.bind(painel_controles, primeiro_controles))
 	_botao(botoes, "Sair", _sair)
+	if Jogo.config["recorde"] > 0:
+		_texto(botoes, "Recorde: %d" % Jogo.config["recorde"], 9, COR_OURO_CLARO, Vector2.ZERO, 0.0,
+			HORIZONTAL_ALIGNMENT_CENTER)
+	rotulo_dificuldade = _texto(botoes, "", 8, COR_SUAVE, Vector2.ZERO, 0.0, HORIZONTAL_ALIGNMENT_CENTER)
+	_mostrar_dificuldade()
 
-	_texto(self, "WASD ou setas para andar · Espaço para procurar · Esc para pausar", 8, COR_SUAVE,
-		Vector2(0, 256), 472.0, HORIZONTAL_ALIGNMENT_RIGHT)
+	rodape = _texto(self, "", 8, COR_SUAVE, Vector2(0, 256), 472.0, HORIZONTAL_ALIGNMENT_RIGHT)
 
 	get_viewport().gui_focus_changed.connect(_ao_mudar_foco)
 	Jogo.config_mudou.connect(_ler_config)
@@ -59,6 +74,13 @@ func _ready() -> void:
 	relogio.timeout.connect(_soltar_frase)
 	add_child(relogio)
 	_soltar_frase()
+
+
+func _process(_delta: float) -> void:
+	# O rodapé mostra os botões do aparelho em uso (teclado ou controle).
+	rodape.text = "Andar: %s · Brilhar: %s · Procurar: %s · Pausar: %s" % [
+		"joystick" if Jogo.usando_controle() else "WASD ou setas",
+		Jogo.nome_botao("brilhar"), Jogo.nome_botao("procurar"), Jogo.nome_botao("pausar")]
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -93,7 +115,11 @@ func _montar_fundo() -> void:
 	_pulsar(brilho, 0.55, 1.4)
 
 	var menina := AnimatedSprite2D.new()
-	menina.sprite_frames = preload("res://assets/sprites/personagem/menina_animacoes.tres")
+	# A mesma folha da fase (Menina.folha(): 4 quadros parada, 8 andando); sem ela, a antiga.
+	if Menina.folha() != "":
+		menina.sprite_frames = Crianca.animacoes(load(Menina.folha()))
+	else:
+		menina.sprite_frames = load("res://assets/sprites/personagem/menina_animacoes.tres")
 	menina.scale = Vector2(2, 2)
 	menina.position = POS_MENINA
 	add_child(menina)
@@ -148,19 +174,50 @@ func _soltar_frase() -> void:
 
 # --- Painéis -------------------------------------------------------------
 
+## Volumes e dificuldade numa grade, a frase da dificuldade, as duas opções lado a
+## lado e Voltar. Mais alto que o painel de Controles: começa logo abaixo do subtítulo.
 func _montar_config() -> void:
 	var caixa := _painel("Config")
+	caixa.add_theme_constant_override("separation", 4)
 	painel_config = caixa.get_parent().get_parent()
+	painel_config.position.y = 86.0
+	painel_config.size.y = 170.0
 	var grade := GridContainer.new()
 	grade.columns = 2
 	grade.add_theme_constant_override("h_separation", 10)
-	grade.add_theme_constant_override("v_separation", 8)
+	grade.add_theme_constant_override("v_separation", 6)
 	caixa.add_child(grade)
 	primeiro_config = _slider(grade, "Música", "volume_musica")
 	_slider(grade, "Efeitos", "volume_efeitos")
-	check_tela_cheia = _check(caixa, "Tela cheia", "tela_cheia")
-	check_piscar = _check(caixa, "Piscar a tela ao levar dano", "piscar_tela")
+	_montar_dificuldade(grade)
+	frase_dificuldade = _texto(caixa, "", 9, COR_OURO_CLARO, Vector2.ZERO, 0.0, HORIZONTAL_ALIGNMENT_CENTER)
+	var opcoes := HBoxContainer.new()
+	opcoes.add_theme_constant_override("separation", 6)
+	caixa.add_child(opcoes)
+	check_tela_cheia = _check(opcoes, "Tela cheia", "tela_cheia")
+	check_piscar = _check(opcoes, "Piscar a tela ao perder luz", "piscar_tela")
 	_botao(caixa, "Voltar", _fechar, 80).size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+
+
+## Dificuldade: as três opções numa linha, a escolhida acesa. Só ela pega o foco:
+## teclado e controle chegam nela com cima e baixo, e as setas (ou o direcional)
+## trocam a escolha, como nos volumes. Com o mouse, é só clicar na opção.
+func _montar_dificuldade(grade: GridContainer) -> void:
+	var nome := _texto(grade, "Dificuldade", 10, COR_TEXTO, Vector2.ZERO)
+	var linha := HBoxContainer.new()
+	linha.add_theme_constant_override("separation", 3)
+	grade.add_child(linha)
+	for i in DadosFases.DIFICULDADES.size():
+		var b := Button.new()
+		b.text = DadosFases.DIFICULDADES[i]
+		b.toggle_mode = true   # a escolhida fica com o visual de apertada
+		b.pressed.connect(_escolher_dificuldade.bind(i))
+		b.gui_input.connect(_setas_dificuldade.bind(b))
+		# O nome fica dourado enquanto a escolha tem o foco.
+		b.focus_entered.connect(nome.add_theme_color_override.bind("font_color", COR_OURO))
+		b.focus_exited.connect(nome.add_theme_color_override.bind("font_color", COR_TEXTO))
+		linha.add_child(b)
+		opcoes_dificuldade.append(b)
 
 
 func _montar_controles() -> void:
@@ -173,14 +230,15 @@ func _montar_controles() -> void:
 	grade.add_theme_constant_override("v_separation", 0)
 	grade.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	caixa.add_child(grade)
-	for par: Array in [["Andar", "WASD ou setas"], ["Procurar", "Espaço"], ["Pausar", "Esc ou P"], ["Confirmar", "Enter"]]:
+	for par: Array in [["Andar", "WASD, setas ou joystick"], ["Brilhar", "Espaço ou A"],
+			["Procurar", "Shift, Q ou B"], ["Pausar", "Esc ou Start"]]:
 		_texto(grade, par[0], 9, COR_OURO, Vector2.ZERO)
 		_texto(grade, par[1], 9, COR_TEXTO, Vector2.ZERO)
-	_texto(caixa, "Frases que brilham dão luz.", 9, COR_OURO_CLARO, Vector2.ZERO, 0.0,
+	_texto(caixa, "Siga os vaga-lumes até as frases boas.", 9, COR_OURO_CLARO, Vector2.ZERO, 0.0,
 		HORIZONTAL_ALIGNMENT_CENTER)
-	_texto(caixa, "Frases escuras apagam um pouco da sua luz.", 9, COR_RUIM, Vector2.ZERO, 0.0,
+	_texto(caixa, "Palavras ruins apagam um pouco da sua luz.", 9, COR_RUIM, Vector2.ZERO, 0.0,
 		HORIZONTAL_ALIGNMENT_CENTER)
-	_texto(caixa, "Junte todas as frases boas e leve sua luz até a nuvem escura.", 9, COR_TEXTO,
+	_texto(caixa, "Com 6 vaga-lumes, Brilhar afasta as palavras ruins.", 9, COR_TEXTO,
 		Vector2.ZERO, 0.0, HORIZONTAL_ALIGNMENT_CENTER)
 	primeiro_controles = _botao(caixa, "Voltar", _fechar, 80)
 	primeiro_controles.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -241,6 +299,48 @@ func _mudar_opcao(ligado: bool, chave: String) -> void:
 	Audio.tocar_sfx("clique")
 	Jogo.config[chave] = ligado
 	Jogo.salvar_config()
+
+
+## Vale a partir da próxima fase que começar.
+func _escolher_dificuldade(nivel: int) -> void:
+	Audio.tocar_sfx("clique")
+	Jogo.config["dificuldade"] = nivel
+	Jogo.salvar_config()
+	_mostrar_dificuldade()
+	_focar(opcoes_dificuldade[nivel])
+
+
+## Com o foco na dificuldade, esquerda e direita trocam a escolha (e não o foco).
+## Uma vez por aperto: tecla segurada e joystick inclinado não passam direto. Só vale
+## o evento que apertou: o joystick manda vários valores do eixo, às vezes no mesmo quadro.
+func _setas_dificuldade(event: InputEvent, opcao: Button) -> void:
+	if not (event.is_action("ui_left") or event.is_action("ui_right")):
+		return
+	opcao.accept_event()
+	var passo := 0
+	if event.is_action_pressed("ui_left") and Input.is_action_just_pressed_by_event("ui_left", event):
+		passo = -1
+	elif event.is_action_pressed("ui_right") and Input.is_action_just_pressed_by_event("ui_right", event):
+		passo = 1
+	var nivel: int = Jogo.config["dificuldade"] + passo
+	if passo != 0 and nivel >= 0 and nivel < opcoes_dificuldade.size():
+		_escolher_dificuldade(nivel)
+
+
+## A dificuldade de Jogo.config na tela: a opção acesa no Config (só ela pega o
+## foco), a frase embaixo dela e o "Dificuldade: ..." embaixo dos botões.
+func _mostrar_dificuldade() -> void:
+	var nivel: int = Jogo.config["dificuldade"]
+	for i in opcoes_dificuldade.size():
+		opcoes_dificuldade[i].set_pressed_no_signal(i == nivel)
+		opcoes_dificuldade[i].focus_mode = Control.FOCUS_ALL if i == nivel else Control.FOCUS_NONE
+	# Para cima, das opções de baixo, o foco vai para a escolhida (pela geometria, de
+	# "Tela cheia" com o Difícil escolhido, ele pularia para o volume dos efeitos).
+	if check_tela_cheia and not opcoes_dificuldade.is_empty():
+		for check: CheckBox in [check_tela_cheia, check_piscar]:
+			check.focus_neighbor_top = check.get_path_to(opcoes_dificuldade[nivel])
+	frase_dificuldade.text = FRASES_DIFICULDADE[nivel]
+	rotulo_dificuldade.text = "Dificuldade: %s" % DadosFases.DIFICULDADES[nivel]
 
 
 func _ler_config() -> void:

@@ -7,6 +7,8 @@
 | **Fases** | 1, 2 e 3 |
 | **Público** | Crianças de 4 a 13 anos |
 
+> **Mudou no Protótipo 4 (20/11):** as frases ruins soltas agora seguem a menina de pouquinho em pouquinho, e crianças apagadas falam as outras. O porquê e os cuidados estão em `docs/decisoes.md`, seção Protótipo 4. O texto abaixo descreve a versão dos protótipos 2 e 3.
+
 ## Resumo
 
 Nem toda frase ruim se comporta igual. Algumas ficam paradas, outras flutuam devagar, e algumas começam a andar num caminho fixo quando a menina está quase sem luz. **Nenhuma frase persegue a menina de verdade**: o perigo é previsível, para crianças pequenas conseguirem aprender e desviar.

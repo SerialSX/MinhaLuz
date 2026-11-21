@@ -421,8 +421,101 @@ def musica_game_over():
     return lp.mixar({"pad": 0.5, "caixinha": 0.7, "melodia": 0.8}, rt60=3.0, mix_reverb=0.55)
 
 
+# ------------------------------------------------------------------ músicas do Protótipo 4
+
+def bumbo(sr):
+    """Bumbo macio (o pulso da música final): senoide que cai de ~125 para 52 Hz, sem estalo."""
+    n = int(0.28 * sr)
+    out = [0.0] * n
+    fase = 0.0
+    for i in range(n):
+        t = i / sr
+        fase += TAU * (52.0 + 73.0 * math.exp(-t / 0.028)) / sr
+        out[i] = math.exp(-t / 0.085) * (math.sin(fase) + 0.3 * math.sin(2 * fase))
+    return mult(out, envelope(n, sr, 0.004, 0.05))
+
+
+def chiado(sr, rng, dur, tau, graves, agudos):
+    """Toque de ruído entre `graves` e `agudos` (Hz) que some rápido: chocalho ou palma macia."""
+    n = int(dur * sr)
+    x = passa_altas([rng.uniform(-1.0, 1.0) for _ in range(n)], sr, graves)
+    a = 1.0 - math.exp(-TAU * agudos / sr)
+    lp = 0.0
+    for i, v in enumerate(x):
+        lp += a * (v - lp)
+        x[i] = lp * math.exp(-i / (tau * sr))
+    return mult(x, envelope(n, sr, 0.002, 0.02))
+
+
+def musica_final():
+    """A menina brilha e as palavras boas vencem: animada e esperançosa, com pulso; Dó maior
+    (C-G-Am-F / C-G-F-G), 120 BPM. Bumbo macio em todo tempo, palma leve no 2 e no 4, chocalho
+    no contratempo, baixo em colcheias saltando de oitava, marimba e melodia de caixinha com sinos."""
+    lp = Laco(120, 8, 707)
+    sr = lp.sr
+    nomes = ["C", "G", "Am", "F", "C", "G", "F", "G"]
+    lp.pads(em_compassos(nomes), {"C": (48, 55, 64), "G": (43, 50, 59), "Am": (45, 52, 60), "F": (41, 48, 57)},
+            0.09, 0.3, 0.8, brilho=0.4)
+    marimba = {"C": (60, 64, 67, 72), "G": (59, 62, 67, 71), "Am": (60, 64, 69, 72), "F": (60, 65, 69, 72)}
+    raiz = {"C": 36, "G": 43, "Am": 45, "F": 41}
+    sinos = (88, 86, 84, 84, 88, 86, 89, 86)  # 1º tempo de cada compasso, junto com a melodia
+    ostinato = ((0, 0.9), (2, 0.5), (1, 0.65), (3, 0.8), (2, 0.5), (1, 0.7), (3, 0.6), (2, 0.5))
+    toque = bumbo(sr)
+    for c, nome in enumerate(nomes):
+        b0 = 4 * c
+        graves = (43, 43, 45, 47) if c == 7 else (raiz[nome],) * 4  # no fim o baixo sobe de volta ao Dó
+        for i, (idx, v) in enumerate(ostinato):
+            lp.tocar("marimba", nota(hz(marimba[nome][idx]), lp.vel(0.34 * v), sr, MARIMBA, 1.0, ataque=0.0015,
+                                     fim=0.15), b0 + 0.5 * i)
+        for q, grave in enumerate(graves):
+            lp.tocar("baixo", nota(hz(grave), lp.vel(0.32), sr, BAIXO, 0.34, ataque=0.006, fim=0.1), b0 + q,
+                     humano=0.002)
+            lp.tocar("baixo", nota(hz(grave + 12), lp.vel(0.2), sr, BAIXO, 0.3, ataque=0.006, fim=0.1),
+                     b0 + q + 0.5, humano=0.002)
+            lp.tocar("bumbo", escalar(toque, 0.42 if q % 2 == 0 else 0.34), b0 + q, humano=0)
+            lp.tocar("chocalho", escalar(chiado(sr, lp.rng, 0.06, 0.016, 4000.0, 9000.0), lp.vel(0.7, 0.2)),
+                     b0 + q + 0.5)
+            if q % 2 == 1:
+                lp.tocar("palma", escalar(chiado(sr, lp.rng, 0.11, 0.028, 900.0, 2800.0), lp.vel(0.7, 0.1)), b0 + q)
+        lp.tocar("sinos", nota(hz(sinos[c]), lp.vel(0.26), sr, CARRILHAO, 2.2, ataque=0.0015, fim=0.4), b0)
+    melodia = ((0, 76), (1, 79), (1.5, 84), (2.5, 88), (3, 86), (3.5, 84),
+               (4, 86), (5.5, 83), (6, 79), (7, 81), (7.5, 83),
+               (8, 84), (9, 88), (9.5, 84), (10.5, 81), (11, 84), (11.5, 86),
+               (12, 84), (13, 81), (13.5, 77), (14.5, 81), (15, 79),
+               (16, 76), (17, 79), (17.5, 84), (18.5, 88), (19, 91), (19.5, 88),
+               (20, 86), (21, 91), (21.5, 86), (22.5, 83), (23, 86),
+               (24, 89), (25, 88), (25.5, 84), (26.5, 81), (27, 84), (27.5, 88),
+               (28, 86), (29, 83), (29.5, 86), (30.5, 91))
+    for b, m in melodia:
+        lp.tocar("melodia", nota(hz(m), lp.vel(0.3, 0.05), sr, CAIXINHA, 1.6, ataque=0.002, fim=0.3), b)
+    return lp.mixar({"pad": 0.4, "marimba": 0.45, "melodia": 0.6, "sinos": 0.8, "baixo": 0.05, "palma": 0.3,
+                     "chocalho": 0.1}, rt60=1.8, mix_reverb=0.35, ecos={"melodia": (0.75, 0.22, 0.3)})
+
+
+def musica_historia():
+    """Cenas de história: calma e terna, como uma canção de ninar; caixinha de música em 3/4
+    sobre pad, Fá maior (F-Dm-Bb-C / F-Am-Bb-C), 72 BPM."""
+    lp = Laco(72, 6, 808)  # 24 tempos = 8 compassos de 3/4 (20 s)
+    sr = lp.sr
+    nomes = ["F", "Dm", "Bb", "C", "F", "Am", "Bb", "C"]
+    lp.pads(em_compassos(nomes, 3), {"F": (41, 48, 57), "Dm": (50, 57, 65), "Bb": (46, 53, 62), "C": (48, 55, 64),
+                                     "Am": (45, 52, 60)}, 0.15, 0.9, 1.8, brilho=0.25)
+    arpejo = {"F": (53, 60, 65, 69), "Dm": (50, 57, 62, 65), "Bb": (46, 53, 58, 62), "C": (48, 55, 60, 64),
+              "Am": (45, 52, 57, 60)}
+    for c, nome in enumerate(nomes):
+        for i, idx in enumerate((0, 1, 2, 3, 2, 1)):  # colcheias: sobe e desce o acorde
+            lp.tocar("caixinha", nota(hz(arpejo[nome][idx]), lp.vel(0.27 if i == 0 else 0.19), sr, CAIXINHA, 3.2,
+                                      fim=0.4), 3 * c + 0.5 * i)
+    melodia = ((0, 81), (2, 84), (3, 81), (5, 77), (6, 74), (7, 77), (8, 82), (9, 79), (11, 76),
+               (12, 81), (14, 84), (15, 88), (17, 84), (18, 86), (19, 82), (20, 77), (21, 79), (22, 76), (23, 79))
+    for b, m in melodia:
+        lp.tocar("melodia", nota(hz(m), lp.vel(0.34, 0.05), sr, SINO, 4.0, ataque=0.006, fim=0.6), b)
+    return lp.mixar({"pad": 0.5, "caixinha": 0.8, "melodia": 0.8}, rt60=2.8, mix_reverb=0.5)
+
+
 MUSICAS = (("menu", musica_menu), ("fase1", musica_fase1), ("fase2", musica_fase2), ("fase3", musica_fase3),
-           ("vitoria", musica_vitoria), ("game_over", musica_game_over))
+           ("vitoria", musica_vitoria), ("game_over", musica_game_over), ("final", musica_final),
+           ("historia", musica_historia))
 
 
 # ------------------------------------------------------------------ efeitos sonoros (32 kHz)
@@ -650,9 +743,214 @@ def sfx_dissolver():
     return fade_fim(out, 0.12), -4.0
 
 
+# ------------------------------------------------------------------ efeitos sonoros do Protótipo 4
+
+def sopro(dur, rng, f_ini, f_fim, pico_em, corte=2500.0):
+    """Sopro de ar: ruído num passa-faixa que desliza de f_ini a f_fim (Hz); cresce até
+    pico_em (fração da duração) e some. O passa-baixas em `corte` tira o chiado."""
+    sr = SR_SFX
+    n = int(dur * sr)
+    out = [0.0] * n
+    low = band = suave = 0.0
+    a = 1.0 - math.exp(-TAU * corte / sr)
+    for i in range(n):
+        x = i / n
+        if x < pico_em:
+            env = math.sin(0.5 * math.pi * x / pico_em) ** 2
+        else:
+            env = ((1.0 - x) / (1.0 - pico_em)) ** 1.5
+        fq = 2.0 * math.sin(math.pi * f_ini * (f_fim / f_ini) ** x / sr)
+        low += fq * band  # filtro de estado variável (passa-faixa)
+        band += fq * (rng.uniform(-1.0, 1.0) - low - 1.2 * band)
+        suave += a * (band - suave)
+        out[i] = env * suave
+    return out
+
+
+def sfx_vagalume():
+    """Vaga-lume pego: blip brilhante e limpo (Dó agudo com uma subidinha no ataque), ~0,12 s.
+    Poucos harmônicos, pois o jogo o toca com pitch_scale de 1,0 a 1,6 (combo): a fundamental
+    vai de ~1,05 a ~1,7 kHz sem ficar estridente. Sem ruído: não usa semente."""
+    sr = SR_SFX
+    n = int(0.12 * sr)
+    out = [0.0] * n
+    fase = 0.0
+    for i in range(n):
+        t = i / sr
+        fase += TAU * 1046.5 * (1.0 - 0.2 * math.exp(-t / 0.012)) / sr
+        out[i] = (math.exp(-t / 0.032) * math.sin(fase) + 0.2 * math.exp(-t / 0.02) * math.sin(2 * fase)
+                  + 0.05 * math.exp(-t / 0.012) * math.sin(3 * fase))
+    return out, -6.0
+
+
+def sfx_brilhar():
+    """A menina brilha: sopro subindo + acorde de Dó maior abrindo do grave ao agudo + cintilar, ~0,9 s."""
+    sr = SR_SFX
+    rng = random.Random(72)
+    dur = 0.9
+    buf = novo(dur)
+    colocar(buf, escalar(sopro(0.4, rng, 400.0, 2800.0, 0.5), 3.5), 0.0)
+    colocar(buf, escalar(baque(0.3, 130.0, 65.0, 0.04, 0.1), 0.4), 0.12)  # calor no grave
+    timbre = ((1.0, 1.0, 0.55), (1.004, 0.45, 0.55), (2.0, 0.22, 0.3), (3.0, 0.07, 0.15))
+    for k, m in enumerate((60, 64, 67, 72, 76, 79, 84)):
+        t0 = 0.12 + 0.035 * k
+        colocar(buf, nota(hz(m), 0.3 + 0.02 * k, sr, timbre, dur - t0, ataque=0.004, fim=0.25), t0)
+    for m in (48, 55, 60):
+        colocar(buf, pad(hz(m), 0.16, sr, 0.3, rng, ataque=0.08, soltura=0.4, brilho=0.35), 0.1)
+    brilhos(buf, rng, (91, 96, 100, 103), 0.3, 0.78, 12, 0.07)
+    buf = com_reverb(buf, 1.0, 0.35)
+    return fade_fim(buf, 0.25), -3.0
+
+
+def sfx_fala_sombra():
+    """Uma sombra falando: murmúrio grave e macio, três sílabas abafadas "uó-uó-uó" (voz sem
+    palavras), ~0,45 s. Harmônicos de uma voz grave passando por duas formantes que abrem do
+    "u" para o "ó"; sem agudos e sem aspereza, para não assustar."""
+    sr = SR_SFX
+    rng = random.Random(73)
+    buf = novo(0.45)
+    for t0, dur, f0 in ((0.0, 0.16, 172.0), (0.14, 0.16, 160.0), (0.28, 0.17, 146.0)):
+        n = int(dur * sr)
+        f0 *= rng.uniform(0.985, 1.015)
+        silaba = [0.0] * n
+        fase = 0.0
+        for i in range(n):
+            x = i / n
+            abre = min(1.0, x / 0.45)  # a boca abre: "u" -> "ó"
+            f = f0 * (1.0 + 0.06 * math.sin(math.pi * x) - 0.03 * x)
+            fase += TAU * f / sr
+            f1 = 300.0 + 250.0 * abre
+            f2 = 720.0 + 200.0 * abre
+            s = 0.0
+            for k in range(1, 9):
+                ganho = 1.0 / (1.0 + ((k * f - f1) / 90.0) ** 2) + 0.35 / (1.0 + ((k * f - f2) / 110.0) ** 2)
+                s += ganho / k * math.sin(k * fase)
+            silaba[i] = s * (0.55 + 0.45 * abre)
+        colocar(buf, mult(silaba, envelope(n, sr, 0.03, 0.07)), t0)
+    return fade_fim(buf, 0.05), -8.0
+
+
+def sfx_amigo():
+    """Uma sombra vira amiga: duas notas alegres subindo (Sol -> Dó, com a terça por cima) e cintilar, ~0,5 s."""
+    rng = random.Random(74)
+    buf = novo(0.5)
+    timbre = ((1.0, 1.0, 0.3), (1.005, 0.4, 0.3), (2.0, 0.2, 0.16), (3.0, 0.06, 0.09))
+    colocar(buf, nota(hz(79), 0.45, SR_SFX, timbre, 0.5, ataque=0.003, fim=0.15), 0.0)
+    colocar(buf, nota(hz(84), 0.5, SR_SFX, timbre, 0.37, ataque=0.003, fim=0.15), 0.13)
+    colocar(buf, nota(hz(88), 0.22, SR_SFX, timbre, 0.37, ataque=0.003, fim=0.15), 0.13)
+    brilhos(buf, rng, (96, 100, 103), 0.17, 0.4, 7, 0.06)
+    buf = com_reverb(buf, 0.7, 0.3)
+    return fade_fim(buf, 0.12), -4.0
+
+
+def sfx_palavra_boa():
+    """Uma palavra boa sendo lançada: sopro leve subindo + brilho na ponta, ~0,25 s.
+    Curto e baixo (toca muitas vezes seguidas)."""
+    rng = random.Random(75)
+    buf = novo(0.25)
+    colocar(buf, sopro(0.22, rng, 700.0, 2400.0, 0.35, corte=3000.0), 0.0)
+    timbre = ((1.0, 1.0, 0.09), (2.0, 0.15, 0.04))
+    for t0, m, v in ((0.07, 88, 0.16), (0.11, 91, 0.13)):
+        colocar(buf, nota(hz(m), v, SR_SFX, timbre, 0.25 - t0, ataque=0.003, fim=0.06), t0)
+    brilhos(buf, rng, (96, 100), 0.1, 0.19, 3, 0.05)
+    return fade_fim(buf, 0.06), -8.0
+
+
+def sfx_estouro():
+    """Palavra ruim se desfazendo: estouro macio ("pop" que cai de 600 para 170 Hz + sopro curto)
+    e uma faísca pequena, ~0,25 s. Curto (toca muitas vezes seguidas)."""
+    sr = SR_SFX
+    rng = random.Random(76)
+    n = int(0.25 * sr)
+    out = [0.0] * n
+    fase = l1 = l2 = 0.0
+    for i in range(n):
+        t = i / sr
+        fase += TAU * (170.0 + 430.0 * math.exp(-t / 0.014)) / sr
+        a = 1.0 - math.exp(-TAU * (400.0 + 1800.0 * math.exp(-t / 0.03)) / sr)
+        l1 += a * (rng.uniform(-1.0, 1.0) - l1)
+        l2 += a * (l1 - l2)
+        out[i] = (math.exp(-t / 0.035) * (math.sin(fase) + 0.25 * math.sin(2 * fase))
+                  + 1.1 * l2 * min(1.0, t / 0.004) * math.exp(-t / 0.04))
+    timbre = ((1.0, 1.0, 0.05), (2.76, 0.15, 0.02))
+    for k, m in enumerate((91, 96, 88)):
+        t0 = 0.045 + 0.04 * k + rng.uniform(-0.006, 0.006)
+        colocar(out, nota(hz(m), 0.2 - 0.03 * k, sr, timbre, 0.12, ataque=0.002, fim=0.04), t0)
+    return fade_fim(out, 0.06), -6.0
+
+
+def sfx_nuvem_surge():
+    """A nuvem aparece: onda grave crescendo (Dó em quinta aberta + nona, sem tensão), chegando
+    de um tom abaixo, com ar e um brilho suave no alto, ~1,6 s. Misteriosa, não assustadora."""
+    sr = SR_SFX
+    rng = random.Random(77)
+    dur = 1.6
+    n = int(dur * sr)
+    vozes = [[hz(m) * d, amp, rng.uniform(0, TAU)] for m, amp in ((36, 0.4), (48, 1.0), (55, 0.6), (62, 0.28))
+             for d in (0.996, 1.004)]
+    out = [0.0] * n
+    for i in range(n):
+        x = i / n
+        if x < 0.68:
+            env = math.sin(0.5 * math.pi * x / 0.68) ** 1.3
+        else:
+            env = 0.5 + 0.5 * math.cos(math.pi * (x - 0.68) / 0.32)
+        desliza = 2.0 ** (-2.0 * (1.0 - min(1.0, x / 0.6)) ** 2 / 12.0) / sr
+        s = 0.0
+        for voz in vozes:
+            voz[2] += TAU * voz[0] * desliza
+            s += voz[1] * (math.sin(voz[2]) + 0.3 * math.sin(2 * voz[2]) + 0.1 * math.sin(3 * voz[2]))
+        out[i] = env * s
+    colocar(out, escalar(sopro(1.5, rng, 300.0, 1100.0, 0.7, corte=2000.0), 5.0), 0.0)
+    timbre = ((1.0, 1.0, 0.5), (1.0058, 0.5, 0.5), (2.0, 0.15, 0.2))
+    for t0, m in ((0.85, 79), (1.0, 86), (1.15, 91)):
+        colocar(out, nota(hz(m), 0.3, sr, timbre, dur - t0, ataque=0.01, fim=0.2), t0)
+    out = com_reverb(out, 1.2, 0.35)
+    return fade_fim(out, 0.3), -4.0
+
+
+def sfx_estrela():
+    """Estrela ganha: "ding" brilhante (Dó agudo) com cintilar, ~0,4 s. O jogo toca com pitch
+    1,0 / 1,12 / 1,25 na 1ª, 2ª e 3ª estrela, o que dá dó, ré, mi."""
+    rng = random.Random(78)
+    buf = novo(0.4)
+    timbre = ((1.0, 1.0, 0.22), (1.004, 0.4, 0.22), (2.0, 0.2, 0.14), (3.0, 0.07, 0.08), (4.0, 0.03, 0.05))
+    colocar(buf, nota(hz(84), 0.5, SR_SFX, timbre, 0.4, ataque=0.002, fim=0.12), 0.0)
+    colocar(buf, nota(hz(96), 0.08, SR_SFX, timbre, 0.4, ataque=0.002, fim=0.12), 0.0)
+    brilhos(buf, rng, (96, 100, 103), 0.05, 0.28, 6, 0.06)
+    buf = com_reverb(buf, 0.6, 0.3)
+    return fade_fim(buf, 0.1), -4.0
+
+
+def sfx_comemoracao():
+    """Comemoração: fanfarra curta e alegre em Dó maior ("tã-tã-tã-TÃ, tã-TÃÃÃ") a duas vozes,
+    com sininhos e cintilar, ~2,0 s."""
+    sr = SR_SFX
+    rng = random.Random(79)
+    dur = 2.0
+    buf = novo(dur)
+    corneta = tuple((float(k), k ** -1.6, 0.8 / (1.0 + 0.3 * (k - 1))) for k in range(1, 7))  # metal macio
+    # (início em s, duração, notas da corneta, sininho uma oitava acima nas notas longas)
+    toques = ((0.0, 0.13, (72, 67), 0), (0.13, 0.13, (72, 67), 0), (0.26, 0.13, (72, 67), 0),
+              (0.39, 0.36, (76, 72), 88), (0.75, 0.17, (79, 76), 91), (0.92, 1.08, (84, 79, 76, 72), 96))
+    for t0, d, notas, sininho in toques:
+        for k, m in enumerate(notas):
+            colocar(buf, nota(hz(m), 0.3 if k == 0 else 0.2, sr, corneta, d, ataque=0.012, fim=0.3 * d), t0)
+        if sininho:
+            colocar(buf, nota(hz(sininho), 0.1, sr, SINO, dur - t0, ataque=0.003, fim=0.3), t0)
+    for m in (48, 55):
+        colocar(buf, pad(hz(m), 0.14, sr, 0.6, rng, ataque=0.05, soltura=0.5), 0.92)
+    brilhos(buf, rng, (91, 96, 100, 103), 0.95, 1.6, 12, 0.05)
+    buf = com_reverb(buf, 1.2, 0.3)
+    return fade_fim(buf, 0.4), -3.0
+
+
 EFEITOS = (("clique", sfx_clique), ("foco", sfx_foco), ("frase_boa", sfx_frase_boa), ("dano", sfx_dano),
            ("luz_apagando", sfx_luz_apagando), ("pulso", sfx_pulso), ("nuvem", sfx_nuvem),
-           ("fase_completa", sfx_fase_completa), ("aviso", sfx_aviso), ("dissolver", sfx_dissolver), ("procurar", sfx_procurar))
+           ("fase_completa", sfx_fase_completa), ("aviso", sfx_aviso), ("dissolver", sfx_dissolver), ("procurar", sfx_procurar),
+           ("vagalume", sfx_vagalume), ("brilhar", sfx_brilhar), ("fala_sombra", sfx_fala_sombra), ("amigo", sfx_amigo),
+           ("palavra_boa", sfx_palavra_boa), ("estouro", sfx_estouro), ("nuvem_surge", sfx_nuvem_surge),
+           ("estrela", sfx_estrela), ("comemoracao", sfx_comemoracao))
 
 
 def finalizar_sfx(x, alvo_db):

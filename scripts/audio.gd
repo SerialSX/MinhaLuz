@@ -48,13 +48,21 @@ func tocar_musica(nome: String) -> void:
 	_tween.chain().tween_callback(saindo.stop)
 
 
-func tocar_sfx(nome: String) -> void:
+## `tom` muda a altura do som (1.0 = normal): usado no combo dos vaga-lumes e nas estrelas.
+func tocar_sfx(nome: String, tom := 1.0) -> void:
 	var stream := _carregar(SFX % nome)
 	if stream == null:
 		return
+	# Prefere um tocador livre, para um som curto não cortar um som longo.
 	var p := _sfx[_proximo_sfx]
-	_proximo_sfx = (_proximo_sfx + 1) % _sfx.size()
+	for i in _sfx.size():
+		var candidato := _sfx[(_proximo_sfx + i) % _sfx.size()]
+		if not candidato.playing:
+			p = candidato
+			break
+	_proximo_sfx = (_sfx.find(p) + 1) % _sfx.size()
 	p.stream = stream
+	p.pitch_scale = tom
 	p.play()
 
 

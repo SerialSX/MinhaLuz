@@ -1,13 +1,36 @@
 # Estado atual
 
-**Atualizado em:** 16/11/2026 (segunda). **Faltam 3 dias** para a apresentação final provável (19/11).
+**Atualizado em:** 21/11/2026 (sábado).
 
 Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atualização.
 
 ## Branches
 
 - `Prototipo`: protótipo 1, só a fase 1 (11/11).
-- `Prototipo2`: protótipo 2, o jogo completo descrito abaixo (16/11). Ainda não mesclado na `main`.
+- `Prototipo2`: protótipo 2, o jogo completo com 3 fases (16 a 18/11).
+- `Prototipo3`: ajustes do controle de ESP32 e créditos (19/11).
+- `Prototipo4`: protótipo 4, descrito abaixo (20/11). Build `build/MinhaLuz.exe` (versão 0.7). Em 21/11 o Lauan jogou e aprovou a dificuldade, o Respirar e a animação, e decidiu que as amigas ficam no lugar.
+
+## Pronto (Protótipo 4)
+
+Resposta à apresentação para crianças ("o jogo está parado"). As decisões estão em `docs/decisoes.md`, seção Protótipo 4.
+
+- [x] Crianças apagadas que andam e falam as frases ruins (5 personagens novos), e que viram amigas e ficam acenando no lugar.
+- [x] Combate de palavras: a criança solta palavras ruins que é preciso desviar, e a menina responde com palavras boas até ela pedir desculpas.
+- [x] Animação com mais quadros (4 parada, 8 andando) em 16 direções para a menina e as crianças: viram suave, e o passo continua ao virar e acompanha a velocidade.
+- [x] Frases ruins soltas que seguem a menina de pouquinho em pouquinho.
+- [x] Vaga-lumes em trilhas, poder Brilhar e Procurar em outro botão.
+- [x] A última frase boa deixa o mundo claro; a nuvem escura só aparece depois.
+- [x] Final de fase com a menina brilhando e as palavras boas respondendo às ruins.
+- [x] Cenas de história antes de cada fase e no fim; tela final com estrelas e recorde.
+- [x] Respirar no lugar do game over; 3 estrelas por fase.
+- [x] Lugares seguros: bancos da amizade (escola) e postes (beco).
+- [x] 9 sons e 2 músicas novos; arte dos personagens, do banco e da nuvem triste.
+- [x] Dificuldade no Config (Fácil, Normal e Difícil). No Difícil, 2 respiros por fase; no 3º a luz apaga e uma tela calma oferece recomeçar.
+- [x] Segurar o botão continua falando palavras boas; as crianças não falam mais todas ao mesmo tempo.
+- [x] Testes automáticos: o jogo inteiro roda do menu à tela final sem erro nas 3 dificuldades, e um robô com 3 jeitos de jogar terminou 27 partidas (3 por dificuldade e jeito) só pelos controles, sem travar.
+
+**Ainda não verificado:** ninguém jogou esta versão de verdade (teclado ou controle), e os sons novos não foram ouvidos.
 
 ## Pronto (Protótipo 2)
 
@@ -47,5 +70,7 @@ Atualize este arquivo a cada segunda e quarta, junto com a apresentação de atu
 - [ ] Testar o `.exe` no PC da apresentação (no PC do Lauan ele já abre e roda; os templates do Godot 4.7.2 só estão instalados nessa máquina).
 - [ ] Pedir à professora o endereço e a chave do servidor e criar `config/placar.cfg` (modelo em `config/placar.exemplo.cfg`).
 - [ ] Página no itch.io: capa 630×500, 2 ou 5 prints, gênero Educacional, comentários desligados. Mandar o link para a professora.
-- [ ] Atualizar o SGDD para o jogo atual (luz de 0 a 100, 3 fases, 4 frases por fase, nuvem escura).
+- [ ] Revisar com o time o SGDD atualizado para o Protótipo 4 e entregar.
 - [ ] Ensaiar no PC da apresentação.
+- [ ] Testar o Protótipo 4 com o controle de ESP32: o botão A agora também é o Brilhar, e o B continua sendo o Procurar.
+- [ ] Levar o Protótipo 4 para crianças de novo e ver se o "parado" sumiu.

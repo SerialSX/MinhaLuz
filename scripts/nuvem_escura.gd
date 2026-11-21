@@ -1,18 +1,19 @@
 class_name NuvemEscura
 extends Area2D
-## A nuvem escura do fim da fase. Fica acima da névoa, visível de longe.
-## Encostar nela antes de juntar todas as frases boas só mostra uma dica;
-## com todas, ela se dissipa e a fase termina (quem decide é scripts/fase.gd).
-## Os nós (Sprite e Colisao) ficam na cena cenas/nuvem_escura.tscn.
+## A nuvem escura: a névoa que se juntou depois da última frase boa da fase.
+## Só aparece nesse momento (surgir). Quando a menina encosta, começa o final
+## da fase (scripts/fase.gd e scripts/final_fase.gd): a nuvem se abre e, no fim,
+## sobe e some. Os nós (Sprite e Colisao) ficam na cena cenas/nuvem_escura.tscn.
 
-signal tocada   ## a menina encostou
+signal tocada   ## a menina encostou (uma vez só)
 
 const TEXTURA := "res://assets/sprites/nuvem/nuvem_escura_nativa.png"
 const ESCALA := 2.0
-const TAMANHO_SEM_ARTE := Vector2(64, 40)   # desenho provisório, se a arte faltar
+const TEMPO_SURGIR := 1.5
 
-var dissipando := false
-var pulso: Tween
+var pronta := false      # só vale encostar depois de surgir por inteiro
+var avisou := false
+var balanco: Tween
 
 @onready var sprite: Sprite2D = $Sprite
 @onready var colisao: CollisionShape2D = $Colisao
@@ -22,51 +23,52 @@ func _ready() -> void:
 	if ResourceLoader.exists(TEXTURA):
 		sprite.texture = load(TEXTURA)
 		sprite.scale = Vector2.ONE * ESCALA
-	var forma := RectangleShape2D.new()
-	forma.size = tamanho() * 0.8
-	colisao.shape = forma
-	body_entered.connect(_ao_encostar)
-
-	# balança devagar
-	var t := create_tween().set_loops().set_trans(Tween.TRANS_SINE)
-	t.tween_property(self, "position:y", position.y - 3.0, 1.5)
-	t.tween_property(self, "position:y", position.y + 3.0, 1.5)
+		var forma := RectangleShape2D.new()
+		forma.size = sprite.texture.get_size() * ESCALA * 0.8
+		colisao.shape = forma
 
 
-func tamanho() -> Vector2:
-	if sprite.texture:
-		return sprite.texture.get_size() * ESCALA
-	return TAMANHO_SEM_ARTE * ESCALA
+## Aparece crescendo devagar (sem susto), e depois fica pulsando para chamar a menina.
+func surgir() -> void:
+	scale = Vector2.ONE * 0.6
+	modulate.a = 0.0
+	var t := create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(self, "scale", Vector2.ONE, TEMPO_SURGIR)
+	t.tween_property(self, "modulate:a", 1.0, TEMPO_SURGIR)
+	t.chain().tween_callback(_ficar_pronta)
 
 
-## Todas as frases boas pegas: a nuvem pulsa, chamando a menina.
-func pulsar() -> void:
-	pulso = create_tween().set_loops().set_trans(Tween.TRANS_SINE)
-	pulso.tween_property(self, "scale", Vector2.ONE * 1.12, 0.6)
-	pulso.tween_property(self, "scale", Vector2.ONE, 0.6)
+func _ficar_pronta() -> void:
+	pronta = true
+	balanco = create_tween().set_loops().set_trans(Tween.TRANS_SINE)
+	balanco.tween_property(self, "scale", Vector2.ONE * 1.1, 0.7)
+	balanco.tween_property(self, "scale", Vector2.ONE, 0.7)
 
 
-func dissipar() -> void:
-	dissipando = true
-	if pulso:
-		pulso.kill()
-	var t := create_tween().set_parallel(true)
-	t.tween_property(self, "scale", Vector2.ONE * 1.8, 2.0)
-	t.tween_property(self, "modulate:a", 0.0, 2.0)
-	t.chain().tween_callback(queue_free)
-
-
-func _ao_encostar(corpo: Node2D) -> void:
-	if corpo is Menina and not dissipando:
-		tocada.emit()
-
-
-func _draw() -> void:
-	if sprite.texture:
+## Confere a cada quadro (e não só no sinal de entrada): a menina pode já estar
+## dentro da nuvem quando ela termina de surgir.
+func _physics_process(_delta: float) -> void:
+	if not pronta or avisou:
 		return
-	# Sem a arte: silhueta escura com borda roxa suave.
-	var bolhas := [Vector2(-34, 6), Vector2(-12, -10), Vector2(14, -8), Vector2(36, 6), Vector2(0, 10)]
-	for c: Vector2 in bolhas:
-		draw_circle(c, 28.0, Color(0.55, 0.4, 0.75, 0.5))
-	for c: Vector2 in bolhas:
-		draw_circle(c, 25.0, Color(0.12, 0.08, 0.18))
+	for corpo in get_overlapping_bodies():
+		if corpo is Menina:
+			avisou = true
+			tocada.emit()
+			return
+
+
+## O final começou: a nuvem se abre e fica fraquinha atrás das palavras.
+func abrir() -> void:
+	if balanco:
+		balanco.kill()
+	var t := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
+	t.tween_property(self, "scale", Vector2.ONE * 1.4, 1.0)
+	t.tween_property(self, "modulate:a", 0.4, 1.0)
+
+
+## O final acabou: o que sobrou da nuvem sobe e some.
+func subir() -> void:
+	var t := create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	t.tween_property(self, "position:y", position.y - 50.0, 1.8)
+	t.tween_property(self, "modulate:a", 0.0, 1.8)
+	t.chain().tween_callback(queue_free)

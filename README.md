@@ -6,20 +6,23 @@ Ideia:
 
 Uma criança está sozinha num mundo escuro e só enxerga o que está dentro da sua bolha de luz. Essa luz é também o emocional dela (a vida).
 
-Frases boas só aparecem dentro da luz. Encostar nelas aumenta a luz (+vida), abre o círculo de visão e clareia o mundo. Aperte Espaço (ou o botão Procurar) e uma seta mostra o caminho até a mais perto.
-Frases ruins tiram luz quando encostam na personagem (−vida).
-Se a luz apagar, é game over.
+Frases boas só aparecem dentro da luz. Encostar nelas aumenta a luz, abre o círculo de visão e clareia o mundo. Vaga-lumes mostram o caminho.
+Crianças apagadas pela névoa repetem frases ruins; a frase boa certa as acende, e elas viram amigas.
+Frases ruins soltas seguem a menina de pouquinho em pouquinho.
+Se a luz acabaria, a menina para e respira. No Fácil e no Normal ela sempre levanta; no Difícil são 2 respiros por fase, e no 3º a fase recomeça.
+Dificuldade: no Config (Fácil, Normal ou Difícil).
 Objetivo
 
-Juntar frases boas para dissipar a nuvem escura no fim de cada fase. São 3 fases, e cada uma tem um mapa novo a cada partida. Ao dissipar a última nuvem, o mundo inteiro se ilumina.
+Achar as 4 frases boas de cada fase. Com a última, o mundo fica claro e a névoa vira uma nuvem escura: a menina entra nela, brilha e responde às palavras ruins com palavras boas. São 3 fases, e cada uma tem um mapa novo a cada partida.
 
 Controles
 WASD ou setas: andar
-Espaço: procurar a próxima frase boa
+Espaço ou Enter: falar palavras boas (com 6 vaga-lumes, vira o Brilho grande)
+Shift ou Q: procurar a próxima frase boa
 Esc ou P: pausar
 Enter: confirmar
 F11: tela cheia
-Controle (gamepad ou o controle de ESP32 em ferramentas/esp32): analógico ou direcional anda, X procura, Start pausa, A confirma, B volta
+Controle (gamepad ou o controle de ESP32 em ferramentas/esp32): analógico ou direcional anda, A fala e confirma, B ou X procura (no controle do grupo, o botão B), Start pausa, e nos menus B volta (Select no controle do grupo)
 
 Como rodar
 Abra o project.godot no Godot 4.7 e aperte F5. O jogo começa no menu.

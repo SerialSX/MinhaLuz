@@ -7,10 +7,10 @@ O ESP32 vira um **controle Bluetooth** (gamepad). O Windows reconhece como um co
 | Joystick (ou direcional) | Andar e escolher opções nos menus |
 | B ou clique do joystick (Procurar) | Procurar a próxima frase boa |
 | Start (Pausar) | Pausar |
-| A (Confirmar) | Confirmar |
-| Select (Voltar) | Voltar (fecha os painéis do menu) |
+| A (Confirmar) | Falar palavras boas e o Brilho grande (no jogo); confirmar (nos menus) |
+| Select (Voltar) | Voltar (fecha os painéis do menu); no jogo, também procura |
 
-Um controle de Xbox também funciona com os mesmos botões, e serve de reserva na apresentação.
+Um controle de Xbox também funciona com os mesmos botões (lá, o B e o X procuram), e serve de reserva na apresentação.
 
 ## Peças
 
